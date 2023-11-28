@@ -1,7 +1,7 @@
-import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
+import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
-export default (): MysqlConnectionOptions => ({
-  type: 'mysql',
+export default (): PostgresConnectionOptions => ({
+  type: 'postgres',
   host: process.env.DATABASE_HOST,
   port: parseInt(process.env.DATABASE_PORT!) ?? 3306,
   username: process.env.DATABASE_USERNAME,
