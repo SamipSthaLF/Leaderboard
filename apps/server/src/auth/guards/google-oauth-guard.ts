@@ -1,6 +1,6 @@
-import { Injectable, ExecutionContext } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
+import { ConfigService } from '@nestjs/config';
+import { Injectable, ExecutionContext } from '@nestjs/common';
 
 @Injectable()
 export class AuthenticationGuard extends AuthGuard('google') {
