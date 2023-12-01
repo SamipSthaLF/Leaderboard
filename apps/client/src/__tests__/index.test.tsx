@@ -1,7 +1,8 @@
-import { render, screen } from '@testing-library/react';
-import Home from '../app/challenges/page';
 import '@testing-library/jest-dom';
 import { MantineProvider } from '@mantine/core';
+import { render, screen } from '@testing-library/react';
+
+import Home from '@/app/challenges/page';
 
 window.matchMedia = jest.fn().mockImplementation((query) => ({
   matches: false,
