@@ -9,6 +9,7 @@ import { Controller, Get, Request, UseGuards } from '@nestjs/common';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
   @Get()
   @UseGuards(AuthenticationGuard)
   async googleAuth(@Request() req: HttpRequest) {}
