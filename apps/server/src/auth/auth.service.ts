@@ -13,10 +13,13 @@ import { generateAccessToken } from './util/jwt.util';
 import { ErrorMessage } from 'src/common/errors/error.message';
 import { RestException } from 'src/common/exceptions/rest.exception';
 import { ErrorDescription } from 'src/common/errors/constants/description.error';
+import { RolesService } from 'src/roles/roles.service';
+import { RoleEnum } from 'src/roles/seed/role.enum';
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    private readonly roleService: RolesService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -64,6 +67,10 @@ export class AuthService {
         username: user.email,
         createdOn: new Date().toDateString(),
       });
+      const defaultRole = await this.roleService.findByRoleName(RoleEnum.User);
+      if (defaultRole) {
+        newUser.roles = [defaultRole];
+      }
     } else {
       newUser = existingUser;
     }
