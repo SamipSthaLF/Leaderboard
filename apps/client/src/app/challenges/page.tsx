@@ -1,5 +1,5 @@
 import { Title } from "@mantine/core";
 
 export default function Home(): JSX.Element {
-  return <Title>Engineering Leaderboard </Title>;
+  return <Title>Engineering Leaderboard</Title>;
 }
