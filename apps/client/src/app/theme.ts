@@ -1,0 +1,45 @@
+import { rem, createTheme } from '@mantine/core';
+import type { MantineTheme } from '@mantine/core';
+
+export const theme = createTheme({
+  primaryColor: 'cascade-blue',
+  colors: {
+    'cascade-blue': [
+      '#edf1fd',
+      '#d7def5',
+      '#abbaec',
+      '#7c94e4',
+      '#5674de',
+      '#4060db',
+      '#3356db',
+      '#2747c2',
+      '#203eae',
+      '#143699'
+    ]
+  },
+  defaultRadius: 'xl',
+  shadows: {
+    md: '1px 1px 3px rgba(0, 0, 0, .25)',
+    xl: '5px 5px 3px rgba(0, 0, 0, .25)'
+  },
+  spacing: {
+    xs: '4px',
+    sm: '8px',
+    md: '12px',
+    lg: '16px',
+    xl: '32px'
+  },
+  fontSizes: {
+    xs: '12px',
+    sm: '14px',
+    md: '16px',
+    lg: '20px',
+    xl: '32px'
+  },
+  headings: {
+    fontFamily: 'SF Pro Display, sans-serif',
+    sizes: {
+      h1: { fontSize: rem(36) }
+    }
+  }
+}) as Partial<MantineTheme>;
