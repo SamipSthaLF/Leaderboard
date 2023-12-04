@@ -10,10 +10,12 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { Roles } from 'src/decorator/roles.decorator';
 import { ChallengesService } from './challenges.service';
 import { ChallengesDto } from './dto/challenges.dto';
 
 @Controller('challenges')
+@Roles('Admin')
 @ApiBearerAuth()
 export class ChallengesController {
   constructor(private readonly challengesService: ChallengesService) {}
