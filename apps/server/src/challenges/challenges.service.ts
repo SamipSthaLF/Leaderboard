@@ -1,47 +1,38 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { ChallengesDto } from './dto/challenges.dto';
+import { Challenge } from './entities/challenges.entity';
 
 @Injectable()
 export class ChallengesService {
-  private challengesDto: ChallengesDto[] = [];
+  constructor(
+    @InjectRepository(Challenge)
+    private challengeRepository: Repository<Challenge>,
+  ) {}
 
-  public create(payload: ChallengesDto) {
-    const sanitizedData = this.sanitize(payload);
-    this.challengesDto.push(sanitizedData);
-    return true;
+  public async create(payload: ChallengesDto) {
+    const challengeEntity = this.challengeRepository.create(payload);
+    return await this.challengeRepository.save(challengeEntity);
   }
 
-  public findAll() {
-    return this.challengesDto;
+  public async findAll() {
+    return this.challengeRepository.find();
   }
 
-  public findByID(id: number) {
-    return this.challengesDto.find((item) => item.id === id);
+  public async findByID(id: number) {
+    return this.challengeRepository.findOne({
+      where: {
+        id,
+      },
+    });
   }
 
-  public update(id: number, payload: Partial<ChallengesDto>) {
-    const challengeIndex = this.challengesDto.findIndex(
-      (item) => item.id === id,
-    );
-    if (challengeIndex < 0) {
-      return 'challenge not found';
-    }
-
-    const temp = { ...this.challengesDto[challengeIndex], ...payload };
-
-    this.challengesDto[challengeIndex] = temp;
-    return this.challengesDto[challengeIndex];
+  public async update(id: number, payload: Partial<ChallengesDto>) {
+    return await this.challengeRepository.update({ id }, payload);
   }
 
-  public delete(id: number) {
-    const challangeIndex = this.challengesDto.findIndex(
-      (item) => item.id === id,
-    );
-    return this.challengesDto.splice(challangeIndex, 1);
-  }
-
-  // some private method to do something
-  private sanitize(payload: ChallengesDto) {
-    return { ...payload };
+  public async delete(id: number) {
+    return await this.challengeRepository.delete({ id });
   }
 }

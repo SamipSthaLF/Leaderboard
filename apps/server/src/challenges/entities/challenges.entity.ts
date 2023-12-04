@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
 import { visibilityOptions } from '../dto/challenges.dto';
 
 @Entity()
@@ -7,17 +7,25 @@ export class Challenge {
   id: number;
 
   @Column()
-  challenge_title: string;
+  title: string;
 
   @Column()
   description?: string;
 
   @Column()
-  challenge_score?: number;
+  points: number;
 
   @Column()
-  privacy?: visibilityOptions;
+  privacy: visibilityOptions;
+
+  @Column()
+  author_id: number;
 
   @Column()
   created_at?: string;
+
+  @BeforeInsert()
+  insertCreatedAt() {
+    this.created_at = new Date().toString();
+  }
 }
