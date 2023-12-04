@@ -39,7 +39,7 @@ export const theme = createTheme({
   headings: {
     fontFamily: 'SF Pro Display, sans-serif',
     sizes: {
-      h1: { fontSize: rem(36) }
+      h1: { fontSize: rem(22), fontWeight: '700', lineHeight: '140%' }
     }
   }
 }) as Partial<MantineTheme>;
