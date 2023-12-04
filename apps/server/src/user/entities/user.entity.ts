@@ -1,15 +1,10 @@
 import { Role } from 'src/roles/entities/role.entity';
 import {
-  AfterInsert,
-  AfterRemove,
-  AfterUpdate,
   BaseEntity,
   Column,
   Entity,
-  JoinColumn,
   JoinTable,
   ManyToMany,
-  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 @Entity()

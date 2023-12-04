@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-type visibilityOptions = 'private' | 'public';
+export type visibilityOptions = 'private' | 'public';
 export class ChallengesDto {
   @ApiProperty() public challenge_title: string = '';
   @ApiPropertyOptional() public description?: string = '';
