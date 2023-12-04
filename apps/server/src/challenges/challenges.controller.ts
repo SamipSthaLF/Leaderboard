@@ -20,7 +20,7 @@ import { ChallengesDto } from './dto/challenges.dto';
 export class ChallengesController {
   constructor(private readonly challengesService: ChallengesService) {}
 
-  @Post('add-challenge')
+  @Post()
   @HttpCode(HttpStatus.CREATED)
   public async post(@Body() body: ChallengesDto): Promise<any> {
     return this.challengesService.create(body);
