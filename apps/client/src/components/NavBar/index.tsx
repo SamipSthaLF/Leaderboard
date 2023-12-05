@@ -1,38 +1,42 @@
 'use client';
 
 import Link from 'next/link';
+
 import { useState } from 'react';
-import { Flex, Group, NavLink, Title } from '@mantine/core';
-import { IconUser, IconLogout, IconTrophy, IconSettings, IconSwitchHorizontal } from '@tabler/icons-react';
+import { IconFileCheck, IconLayoutGrid } from '@tabler/icons-react';
+
+import { Avatar, Box, Divider, Flex, Group, NavLink, Stack, Text } from '@mantine/core';
+
+import { Logo } from '@/components/Logo';
 
 const data = [
-  { link: '/challenges', label: 'Challenges', icon: IconTrophy },
-  { link: '/users', label: 'Users', icon: IconUser },
-  { link: '/settings', label: 'Settings', icon: IconSettings }
+  { link: '/challenges', label: 'Challenges', icon: IconLayoutGrid },
+  { link: '/reviews', label: 'Reviews', icon: IconFileCheck }
 ];
 
 export function Navbar() {
+  const user = { name: 'Jessy Smith', email: 'jessysmith@leaderboard.com' };
   const [activeNavIndex, setActiveNavIndex] = useState(0);
 
   return (
-    <Flex direction="column" justify="space-between" h="100%">
-      <Flex direction="column">
-        <Group justify="space-between" pb="md" mb="calc(var(--mantine-spacing-md) * 1.5)">
-          <Title order={3}>EngLead</Title>
-        </Group>
+    <Flex direction="column" h="100%" justify="space-between">
+      <Flex direction="column" p="calc(var(--mantine-spacing-md) * 2)">
+        <Logo />
 
-        <Group gap="0">
+        <Group gap="0" mt="calc(var(--mantine-spacing-md) * 4 )">
           {data.map((item, index) => {
             const { icon: Icon, label, link } = item;
+            const isActive = index === activeNavIndex;
 
             return (
               <NavLink
+                fz="sm"
+                fw="600"
                 key={label}
                 href={link}
                 label={label}
-                variant="filled"
                 component={Link}
-                active={index === activeNavIndex}
+                active={isActive}
                 leftSection={<Icon stroke={1.5} />}
                 onClick={() => setActiveNavIndex(index)}
               />
@@ -41,10 +45,20 @@ export function Navbar() {
         </Group>
       </Flex>
 
-      <Group gap="0" mb="md">
-        <NavLink label="Change Account" href="/change-account" leftSection={<IconSwitchHorizontal stroke={1.5} />} />
-        <NavLink label="Logout" href="/logout" leftSection={<IconLogout stroke={1.5} />} />
-      </Group>
+      <Box>
+        <Divider />
+        <Flex gap="lg" align="center" p="calc(var(--mantine-spacing-md) * 2)">
+          <Avatar alt="User" color="indigo" />
+          <Stack gap="0">
+            <Text size="md" fw="bold" lh="150%">
+              {user.name}
+            </Text>
+            <Text size="sm" lh="155%">
+              {user.email}
+            </Text>
+          </Stack>
+        </Flex>
+      </Box>
     </Flex>
   );
 }
