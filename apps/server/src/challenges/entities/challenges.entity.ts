@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   BeforeUpdate,
 } from 'typeorm';
+
 import { visibilityOptions } from '../dto/challenges.dto';
 
 @Entity()
