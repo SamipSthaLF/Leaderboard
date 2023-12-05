@@ -16,12 +16,24 @@ async function bootstrap() {
   app.enableCors();
   app.useGlobalGuards(new JwtAuthGuard(new Reflector()));
 
+  /**Seed data
+   * 1. Seeds the role to [Admin, User, Reviewer] if not present
+   * 2. Seeds the user to <SEED_USER_EMAIL]> if not present
+   * 3. Seeds the userrole making <SEED_USER_EMAIL> a ADMIN if not present
+   */
   const roleSeed = app.get(RoleSeed); // Inject RoleSeed
-  await roleSeed.seed();
   const userSeed = app.get(UserSeed);
-  await userSeed.seed();
   const userroleSeed = app.get(UserroleSeed);
+
+  //seed role
+  await roleSeed.seed();
+
+  //seed user
+  await userSeed.seed();
+
+  //seed userrole
   await userroleSeed.seed();
+
   await app.listen(3001);
 }
 bootstrap();
