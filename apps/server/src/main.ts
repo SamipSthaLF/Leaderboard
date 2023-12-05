@@ -1,5 +1,7 @@
 import { AppModule } from './app.module';
 
+import { setupSwagger } from '../swagger.config';
+
 import { UserSeed } from './user/seed/user.seed';
 
 import { RoleSeed } from './roles/seed/roles.seed';
@@ -14,17 +16,24 @@ import { UserroleSeed } from './userroles/seed/userroles.seed';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Setup Swagger
+  setupSwagger(app);
+
   app.enableCors();
   app.useGlobalGuards(new JwtAuthGuard(new Reflector()));
 
   const roleSeed = app.get(RoleSeed); // Inject RoleSeed
   await roleSeed.seed();
+
   const userSeed = app.get(UserSeed);
   await userSeed.seed();
+
   const challengesSeed = app.get(ChallengesSeed);
   await challengesSeed.seed();
+
   const userroleSeed = app.get(UserroleSeed);
   await userroleSeed.seed();
+
   await app.listen(3001);
 }
 bootstrap();
