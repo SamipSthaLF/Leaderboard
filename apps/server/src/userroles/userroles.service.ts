@@ -1,12 +1,16 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { UserService } from 'src/user/user.service';
+
 import { Role } from 'src/roles/entities/role.entity';
 import { RolesService } from 'src/roles/roles.service';
-import { User } from 'src/user/entities/user.entity';
-import { UserService } from 'src/user/user.service';
-import { Repository } from 'typeorm';
-import { AssignUserroleDto } from './dto/assign-userrole.dto';
+
+import { HttpStatus, Injectable } from '@nestjs/common';
+
 import { UpdateUserroleDto } from './dto/update-userrole.dto';
+import { AssignUserroleDto } from './dto/assign-userrole.dto';
+
+import { ErrorMessage } from 'src/common/errors/error.message';
+import { RestException } from 'src/common/exceptions/rest.exception';
+import { ErrorDescription } from 'src/common/errors/constants/description.error';
 
 @Injectable()
 export class UserrolesService {
@@ -14,15 +18,20 @@ export class UserrolesService {
     private userService: UserService,
     private roleService: RolesService,
   ) {}
-  async assignUserRole(assignUserroleDto: AssignUserroleDto) {
+
+  assignUserRole = async (assignUserroleDto: AssignUserroleDto) => {
     const user = await this.userService.findOne(assignUserroleDto.userId);
     if (!user) {
-      return 'No valid user is found!';
+      throw new RestException(
+        new ErrorMessage(
+          HttpStatus.NOT_ACCEPTABLE,
+          HttpStatus.NOT_ACCEPTABLE.toLocaleString(),
+          ErrorDescription.NO_ASSOCIATED_USER_FOUND,
+        ),
+      );
     }
-    console.log(user);
-    console.log(assignUserroleDto);
-    var roleList: Role[] = [];
-    //todo validate role id is present.
+
+    const roleList: Role[] = [];
     await Promise.all(
       assignUserroleDto.rolesId.map(async (roleId) => {
         try {
@@ -37,12 +46,20 @@ export class UserrolesService {
         }
       }),
     );
-    console.log('roleList' + roleList);
+    if (roleList.length != assignUserroleDto.rolesId.length) {
+      throw new RestException(
+        new ErrorMessage(
+          HttpStatus.CONFLICT,
+          HttpStatus.CONFLICT.toString(),
+          ErrorDescription.INVALID_ROLE,
+        ),
+      );
+    }
     user.roles = roleList;
     this.userService.saveUser(user);
 
     return 'This action assigns user with roles';
-  }
+  };
 
   findAll() {
     return `This action returns all userroles`;

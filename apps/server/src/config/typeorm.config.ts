@@ -1,15 +1,16 @@
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+
 import { Role } from 'src/roles/entities/role.entity';
 import { User } from 'src/user/entities/user.entity';
 
-import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
+import {} from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
 /**
  * Retrieves the configuration for the PostgreSQL database connection.
  *
  * @param {ConfigService} configService - NestJS ConfigService for accessing configuration values.
- * @returns {PostgresConnectionOptions} Configuration for PostgreSQL database connection.
+ * @returns {TypeOrmModuleOptions} Configuration for  database connection.
  */ const getDBConfig = (
   configService: ConfigService,
 ): TypeOrmModuleOptions => ({
@@ -23,7 +24,10 @@ import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConne
   database: configService.get<string>('DATABASE_NAME'),
   autoLoadEntities: true,
   // Enable synchronization (automatic creation of database tables based on entities)
-  synchronize: true, //todo dev =true
+  synchronize:
+    configService.get<boolean>('ENABLE_DATABASE_SYNCHRONIZE') || false,
+  logger: 'advanced-console', // Enable query logging
+  logging: 'all',
 });
 
 export default getDBConfig;

@@ -7,11 +7,15 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
+
 import { RolesService } from './roles.service';
+
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 
 @Controller('roles')
+@ApiBearerAuth()
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 
@@ -27,14 +31,12 @@ export class RolesController {
 
   @Get(':id')
   async findOne(@Param('id') id: number) {
-    const data = await this.rolesService.findOne(+id);
-    console.log(data);
-    return 'this returns one data';
+    return await this.rolesService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
-    return this.rolesService.update(+id, updateRoleDto);
+  update(@Param('id') id: string, @Body() updateRoleRequest: CreateRoleDto) {
+    return this.rolesService.update(+id, updateRoleRequest);
   }
 
   @Delete(':id')

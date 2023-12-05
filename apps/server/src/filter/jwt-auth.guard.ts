@@ -5,17 +5,33 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Reflector } from '@nestjs/core';
-import { ErrorDescription } from 'src/common/errors/constants/description.error';
+
 import { ErrorMessage } from 'src/common/errors/error.message';
 import { RestException } from 'src/common/exceptions/rest.exception';
-import { ROLES_KEY } from 'src/decorator/roles.decorator';
+import { ErrorDescription } from 'src/common/errors/constants/description.error';
 
+import { ROLES_KEY } from 'src/decorator/roles.decorator';
+/**
+ * Custom JWT authentication guard that extends the `AuthGuard` from `@nestjs/passport`.
+ * This guard also checks for roles specified using the `Roles` decorator.
+ * @class
+ */
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
+  /**
+   * Constructor to inject the `Reflector` service.
+   * @constructor
+   * @param {Reflector} reflector - The `Reflector` service for metadata reflection.
+   */
   constructor(private readonly reflector: Reflector) {
     super();
   }
 
+  /**
+   * Checks if the route should be authenticated and validates roles.
+   * @param {ExecutionContext} context - The execution context of the route.
+   * @returns {Promise<boolean>} - A boolean indicating whether the route can be accessed.
+   */
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isAuthSkipped = this.reflector.getAllAndOverride<boolean>(
       'skipAuth',
@@ -25,35 +41,47 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (isAuthSkipped) {
       return true; // Skip authentication for routes marked with @SkipAuth
     }
+
     // Continue with the authentication
     const canActivate = await super.canActivate(context);
-    if (canActivate) {
-      // Check if user has the required roles from the token
-      const roles = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [
-        context.getHandler(),
-        context.getClass(),
-      ]);
 
-      console.log(roles);
-      if (roles && roles.length > 0) {
-        const request = await context.switchToHttp().getRequest();
-        const user = request.user;
-        if (
-          !user ||
-          !user.roles ||
-          !roles.some((role) => user.roles.includes(role))
-        ) {
-          throw new UnauthorizedException(
-            'User does not have the required roles',
-          );
-        }
-      }
-
-      return true; // Authentication and role check successful
+    if (!canActivate) {
+      return false; // Authentication failed
     }
-    return false; // Authentication failed
+
+    // Check if the user has the required roles from the token
+    const roles = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+
+    if (!roles || roles.length < 1) {
+      return true; // No roles specified, allow access
+    }
+
+    const request = await context.switchToHttp().getRequest();
+    const user = request.user;
+
+    if (
+      !user ||
+      !user.roles ||
+      !roles.some((role) => user.roles.includes(role))
+    ) {
+      throw new UnauthorizedException('User does not have the required roles');
+    }
+
+    return true; // Authentication and role check successful
   }
-  handleRequest(err: any, user: any, info: any) {
+
+  /**
+   * Handles the result of the authentication.
+   * @param {any} err - The error object, if any.
+   * @param {any} user - The user object, if authentication is successful.
+   * @param {any} info - Additional information about the authentication process.
+   * @returns {any} - The user object if authentication is successful.
+   * @throws {RestException} - Throws a `RestException` if authentication fails.
+   */
+  handleRequest(err: any, user: any, info: any): any {
     if (err || !user) {
       const unauthorizedException = new UnauthorizedException();
       const errorMessage = new ErrorMessage(
@@ -63,6 +91,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       );
       throw new RestException(errorMessage);
     }
+
     return user;
   }
 }

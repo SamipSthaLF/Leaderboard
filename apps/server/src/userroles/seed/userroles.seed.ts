@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { RolesService } from 'src/roles/roles.service';
-import { UserService } from 'src/user/user.service';
-import getSeedUser from 'src/config/seeduser.config';
 import { ConfigService } from '@nestjs/config';
-import { RoleEnum } from 'src/roles/seed/role.enum';
+
+import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
+
+import { RoleEnum } from 'src/roles/seed/role.enum';
+
+import getSeedUser from 'src/config/seeduser.config';
+
+import { RolesService } from 'src/roles/roles.service';
 
 @Injectable()
 export class UserroleSeed {

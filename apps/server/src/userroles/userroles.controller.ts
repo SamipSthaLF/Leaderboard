@@ -7,11 +7,15 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
+
 import { UserrolesService } from './userroles.service';
+
 import { AssignUserroleDto } from './dto/assign-userrole.dto';
 import { UpdateUserroleDto } from './dto/update-userrole.dto';
 
 @Controller('userroles')
+@ApiBearerAuth()
 export class UserrolesController {
   constructor(private readonly userrolesService: UserrolesService) {}
 
