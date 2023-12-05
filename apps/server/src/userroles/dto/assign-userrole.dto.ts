@@ -1,3 +1,5 @@
+import { ApiProperty } from '@nestjs/swagger';
+
 import {
   ArrayMinSize,
   ArrayNotEmpty,
@@ -13,8 +15,10 @@ export class AssignUserroleDto {
     {},
     { each: true, message: 'Each element in rolesId must be a number' },
   )
+  @ApiProperty()
   rolesId: number[];
 
   @IsNumber({}, { message: 'UserId must be a number' })
+  @ApiProperty()
   userId: number;
 }
