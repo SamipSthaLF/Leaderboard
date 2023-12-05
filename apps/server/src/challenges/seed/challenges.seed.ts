@@ -6,6 +6,10 @@ import { ChallengesService } from '../challenges.service';
 export class ChallengesSeed {
   constructor(private readonly challengesService: ChallengesService) {}
 
+  /**
+   * Seed initial data into the challenges table if no challenges exist.
+   * @returns {Promise<void>} - Promise that resolves after seeding data.
+   */
   async seed() {
     const existingChallenges = await this.challengesService.findAll();
     if (existingChallenges.length === 0) {
