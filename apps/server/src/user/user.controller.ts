@@ -32,6 +32,7 @@ export class UserController {
   }
 
   @Get()
+  @Roles('Reviewer', 'User')
   @HttpCode(HttpStatus.OK)
   async findAll() {
     return await this.userService.findAll();

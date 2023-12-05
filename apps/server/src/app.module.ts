@@ -12,11 +12,11 @@ import { AppController } from '@/app.controller';
 
 import getDBConfig from '@/config/typeorm.config';
 
-import { RolesModule } from './roles/roles.module';
+import { RolesModule } from '@/roles/roles.module';
 
-import { JwtStrategy } from './filter/jwt.strategy';
+import { JwtStrategy } from '@filter/jwt.strategy';
 
-import { UserrolesModule } from './userroles/userroles.module';
+import { UserrolesModule } from '@/userroles/userroles.module';
 
 @Module({
   imports: [
