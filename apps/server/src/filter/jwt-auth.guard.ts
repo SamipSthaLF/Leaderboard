@@ -5,9 +5,11 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Reflector } from '@nestjs/core';
-import { ErrorDescription } from 'src/common/errors/constants/description.error';
+
 import { ErrorMessage } from 'src/common/errors/error.message';
 import { RestException } from 'src/common/exceptions/rest.exception';
+import { ErrorDescription } from 'src/common/errors/constants/description.error';
+
 import { ROLES_KEY } from 'src/decorator/roles.decorator';
 /**
  * Custom JWT authentication guard that extends the `AuthGuard` from `@nestjs/passport`.
