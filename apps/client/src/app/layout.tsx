@@ -38,7 +38,7 @@ export default function RootLayout({
             }}
             padding="md"
           >
-            <AppShellNavbar p="md">
+            <AppShellNavbar>
               <Navbar />
             </AppShellNavbar>
             <AppShellMain>

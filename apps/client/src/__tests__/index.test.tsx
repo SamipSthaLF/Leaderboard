@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { MantineProvider } from '@mantine/core';
 import { render, screen } from '@testing-library/react';
 
-import Home from '@/app/challenges/page';
+import Challenges from '@/app/challenges/page';
 
 window.matchMedia = jest.fn().mockImplementation((query) => ({
   matches: false,
@@ -12,11 +12,11 @@ window.matchMedia = jest.fn().mockImplementation((query) => ({
   removeEventListener: jest.fn()
 }));
 
-describe('Home', () => {
+describe('Challenges', () => {
   it('renders a heading', () => {
     render(
       <MantineProvider>
-        <Home />
+        <Challenges />
       </MantineProvider>
     );
 
