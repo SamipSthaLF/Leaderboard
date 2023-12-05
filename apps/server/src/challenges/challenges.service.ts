@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
 
-import { ChallengesDto } from './dto/challenges.dto';
 import { Challenge } from './entities/challenges.entity';
+import { CreateChallengeDto } from './dto/challenges.dto';
 
 @Injectable()
 export class ChallengesService {
@@ -15,10 +15,10 @@ export class ChallengesService {
 
   /**
    * Create a new challenge.
-   * @param {ChallengesDto} payload - The payload containing challenge information.
+   * @param {CreateChallengeDto} payload - The payload containing challenge information.
    * @returns {Promise<ChallengeEntity>} - The created challenge entity.
    */
-  public async create(payload: ChallengesDto) {
+  public async create(payload: CreateChallengeDto) {
     const challengeEntity = this.challengeRepository.create(payload);
     return await this.challengeRepository.save(challengeEntity);
   }
@@ -47,10 +47,10 @@ export class ChallengesService {
   /**
    * Update a challenge by its ID.
    * @param {number} id - The ID of the challenge to update.
-   * @param {Partial<ChallengesDto>} payload - The partial data to update in the challenge.
+   * @param {Partial<CreateChallengeDto>} payload - The partial data to update in the challenge.
    * @returns {Promise<UpdateResult>} - The result of the update operation.
    */
-  public async update(id: number, payload: Partial<ChallengesDto>) {
+  public async update(id: number, payload: Partial<CreateChallengeDto>) {
     return await this.challengeRepository.update({ id }, payload);
   }
 

@@ -1,12 +1,21 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export type visibilityOptions = 'private' | 'public';
-export class ChallengesDto {
-  @ApiProperty() public title: string;
-  @ApiPropertyOptional() public description?: string;
-  @ApiProperty() public points: number;
-  @ApiProperty() public privacy: visibilityOptions;
-  @ApiProperty() public author_id: number;
-  @ApiPropertyOptional() public created_at?: string;
-  @ApiPropertyOptional() public updated_at?: string;
+export class CreateChallengeDto {
+  @ApiProperty({ default: 'KPI' }) public title: string;
+
+  @ApiPropertyOptional({ default: 'User needs to fill' })
+  public description?: string;
+
+  @ApiProperty({ default: 1 }) public points: number;
+
+  @ApiProperty({ default: 'public' }) public privacy: visibilityOptions;
+
+  @ApiProperty({ default: 1 }) public author_id: number;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+export interface UpdateChallengeDto extends Partial<CreateChallengeDto> {}
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
+export class UpdateChallengeDto {}

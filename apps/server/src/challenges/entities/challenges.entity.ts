@@ -1,10 +1,11 @@
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   Column,
   Entity,
-  PrimaryGeneratedColumn,
+  BeforeUpdate,
   BeforeInsert,
   CreateDateColumn,
-  BeforeUpdate,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { visibilityOptions } from '../dto/challenges.dto';
@@ -14,22 +15,28 @@ export class Challenge {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty({ default: 'KPI' })
   @Column()
   title: string;
 
+  @ApiPropertyOptional({ default: 'User needs to fill' })
   @Column()
   description?: string;
 
+  @ApiProperty({ default: 1 })
   @Column()
   points: number;
 
+  @ApiProperty({ default: 'public' })
   @Column()
   privacy: visibilityOptions;
 
+  @ApiProperty({ default: 1 })
   @Column()
   author_id: number;
 
   @CreateDateColumn()
+  @ApiPropertyOptional({ default: '2023-09-12' })
   created_at?: Date;
 
   @BeforeInsert()
@@ -39,6 +46,7 @@ export class Challenge {
   }
 
   @CreateDateColumn()
+  @ApiPropertyOptional({ default: '2023-09-13' })
   updated_at?: Date;
 
   @BeforeUpdate()

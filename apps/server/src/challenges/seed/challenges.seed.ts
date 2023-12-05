@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { ChallengesService } from '../challenges.service';
+
 @Injectable()
 export class ChallengesSeed {
   constructor(private readonly challengesService: ChallengesService) {}
