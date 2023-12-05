@@ -1,9 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-import { Role } from 'src/roles/entities/role.entity';
-import { User } from 'src/user/entities/user.entity';
-
 import {} from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
 /**

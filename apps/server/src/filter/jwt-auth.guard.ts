@@ -3,14 +3,14 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { Reflector } from '@nestjs/core';
+import { AuthGuard } from '@nestjs/passport';
 
-import { ErrorMessage } from 'src/common/errors/error.message';
-import { RestException } from 'src/common/exceptions/rest.exception';
-import { ErrorDescription } from 'src/common/errors/constants/description.error';
+import { ErrorMessage } from '@common/errors/error.message';
+import { RestException } from '@common/exceptions/rest.exception';
+import { ErrorDescription } from '@common/errors/constants/description.error';
 
-import { ROLES_KEY } from 'src/decorator/roles.decorator';
+import { ROLES_KEY } from '@decorator/roles.decorator';
 /**
  * Custom JWT authentication guard that extends the `AuthGuard` from `@nestjs/passport`.
  * This guard also checks for roles specified using the `Roles` decorator.
@@ -50,11 +50,36 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     }
 
     // Check if the user has the required roles from the token
-    const roles = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [
-      context.getHandler(),
-      context.getClass(),
-    ]);
+    //check for controller roles
+    const controllerRoles = this.reflector.getAllAndOverride<string[]>(
+      ROLES_KEY,
+      [context.getClass()],
+    );
 
+    //check for method roles
+    const methodRoles = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [
+      context.getHandler(),
+    ]);
+    /**   
+     * The code block doesn't extract from method level so opted to use two reflector to fetch handler and method
+    // console.log(
+    //   this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [
+    //     context.getClass(),
+    //     context.getHandler(),
+    //   ]),
+    // );
+    */
+    let roles: string[] = [];
+
+    // Check if both controllerRoles and methodRoles are defined before combining
+    if (controllerRoles !== undefined && methodRoles !== undefined) {
+      roles = [...controllerRoles, ...methodRoles];
+    } else if (controllerRoles !== undefined) {
+      roles = controllerRoles;
+    } else if (methodRoles !== undefined) {
+      roles = methodRoles;
+    }
+    console.log(roles, 'roles');
     if (!roles || roles.length < 1) {
       return true; // No roles specified, allow access
     }

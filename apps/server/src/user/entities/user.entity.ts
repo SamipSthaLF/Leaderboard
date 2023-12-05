@@ -1,4 +1,4 @@
-import { Role } from 'src/roles/entities/role.entity';
+import { Role } from '@/roles/entities/role.entity';
 
 import {
   AfterInsert,
@@ -13,6 +13,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()

@@ -6,16 +6,16 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HttpStatus, Injectable } from '@nestjs/common';
 
-import { User } from 'src/user/entities/user.entity';
+import { ErrorMessage } from '@common/errors/error.message';
+import { RestException } from '@common/exceptions/rest.exception';
+import { ErrorDescription } from '@common/errors/constants/description.error';
 
-import { generateAccessToken } from './util/jwt.util';
+import { User } from '@/user/entities/user.entity';
 
-import { ErrorMessage } from 'src/common/errors/error.message';
-import { RestException } from 'src/common/exceptions/rest.exception';
-import { ErrorDescription } from 'src/common/errors/constants/description.error';
+import { generateAccessToken } from '@/auth/util/jwt.util';
 
-import { RoleEnum } from 'src/roles/seed/role.enum';
-import { RolesService } from 'src/roles/roles.service';
+import { RoleEnum } from '@/common/constants/role.enum';
+import { RolesService } from '@/roles/roles.service';
 
 @Injectable()
 export class AuthService {
@@ -33,7 +33,7 @@ export class AuthService {
    */
   requestAuthentication = async (req: Request) => {
     // Check if the request has a valid API key for authentication bypass
-    if (req.headers['x-api-key'] == process.env.STATIC_API_TOKEN) {
+    if (req.headers['x-api-key'] === process.env.STATIC_API_TOKEN) {
       return 'Authentication bypass from vyaguta'; // todo feature if called from vyaguta with authentication bypass
     }
     // Check if an authorized user exists in the request

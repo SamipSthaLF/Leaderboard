@@ -1,15 +1,14 @@
-import { Repository } from 'typeorm';
-
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { Role } from './entities/role.entity';
+import { Repository } from 'typeorm';
 
-import { CreateRoleDto } from './dto/create-role.dto';
-import { UpdateRoleDto } from './dto/update-role.dto';
-import { RestException } from 'src/common/exceptions/rest.exception';
-import { ErrorMessage } from 'src/common/errors/error.message';
-import { ErrorDescription } from 'src/common/errors/constants/description.error';
+import { ErrorMessage } from '@common/errors/error.message';
+import { RestException } from '@common/exceptions/rest.exception';
+import { ErrorDescription } from '@common/errors/constants/description.error';
+
+import { Role } from '@/roles/entities/role.entity';
+import { CreateRoleDto } from '@/roles/dto/create-role.dto';
 
 /**
  * Service responsible for handling CRUD operations related to roles.
