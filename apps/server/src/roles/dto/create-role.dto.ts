@@ -1,3 +1,9 @@
+import { IsString } from 'class-validator';
+
 export class CreateRoleDto {
-  constructor(public roleName: string) {}
+  @IsString()
+  public roleName: string;
+  constructor(roleName: string) {
+    this.roleName = roleName;
+  }
 }

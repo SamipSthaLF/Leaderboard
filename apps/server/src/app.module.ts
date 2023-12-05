@@ -1,10 +1,10 @@
 import { DataSource } from 'typeorm';
 
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { AppService } from './app.service';
-
-import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AuthModule } from './auth/auth.module';
 
@@ -14,12 +14,12 @@ import { AppController } from './app.controller';
 
 import getDBConfig from './config/typeorm.config';
 
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RolesModule } from './roles/roles.module';
-import { UserrolesModule } from './userroles/userroles.module';
-import { JwtService } from '@nestjs/jwt';
+
 import { JwtStrategy } from './filter/jwt.strategy';
-import { AuthService } from './auth/auth.service';
+
+import { UserrolesModule } from './userroles/userroles.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),

@@ -25,7 +25,7 @@ export class AuthController {
 
   @Get('google/callback')
   @UseGuards(AuthenticationGuard)
-  async callbacktest(@Request() req: any) {
+  async callbacktest(@Request() req: HttpRequest) {
     return await this.authService.createOrUpdateUser(req.user);
   }
 }
