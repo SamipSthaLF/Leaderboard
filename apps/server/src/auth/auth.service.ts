@@ -76,6 +76,7 @@ export class AuthService {
 
     if (!user) {
       // Create a new user if not found
+      // Create a new user if not found
       user = this.userRepository.create({
         username: userDto.email,
         roles: [RoleEnum.User],

@@ -12,12 +12,12 @@ import { AppController } from '@/app.controller';
 
 import getDBConfig from '@/config/typeorm.config';
 
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RolesModule } from './roles/roles.module';
-import { UserrolesModule } from './userroles/userroles.module';
-import { JwtService } from '@nestjs/jwt';
+
 import { JwtStrategy } from './filter/jwt.strategy';
-import { AuthService } from './auth/auth.service';
+
+import { UserrolesModule } from './userroles/userroles.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
