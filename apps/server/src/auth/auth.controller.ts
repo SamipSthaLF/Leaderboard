@@ -8,6 +8,7 @@ import { SkipAuth } from '@decorator/skip-auth.decorator';
 import { AuthService } from '@/auth/auth.service';
 
 import { AuthenticationGuard } from '@/auth/guards/google-oauth-guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('auth')
 @SkipAuth()
