@@ -9,6 +9,7 @@ import {
   HttpStatus,
   HttpCode,
 } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 import { UserService } from './user.service';
 
@@ -19,6 +20,7 @@ import { Roles } from 'src/decorator/roles.decorator';
 
 @Controller('user')
 @Roles('Admin')
+@ApiBearerAuth()
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
