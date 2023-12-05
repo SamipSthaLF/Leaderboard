@@ -1,3 +1,10 @@
+import { IsString } from 'class-validator';
+
 export class CreateUserDto {
-  constructor(public username: string) {}
+  @IsString()
+  public username: string;
+
+  constructor(username: string) {
+    this.username = username;
+  }
 }

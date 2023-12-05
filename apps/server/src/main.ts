@@ -1,10 +1,14 @@
 import { AppModule } from './app.module';
 
-import { NestFactory, Reflector } from '@nestjs/core';
-import { RoleSeed } from './roles/seed/roles.seed';
 import { UserSeed } from './user/seed/user.seed';
-import { UserroleSeed } from './userroles/seed/userroles.seed';
+
+import { RoleSeed } from './roles/seed/roles.seed';
+
+import { NestFactory, Reflector } from '@nestjs/core';
+
 import { JwtAuthGuard } from './filter/jwt-auth.guard';
+
+import { UserroleSeed } from './userroles/seed/userroles.seed';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
