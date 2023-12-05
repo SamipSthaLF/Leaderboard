@@ -7,4 +7,5 @@ export class ChallengesDto {
   @ApiProperty() public privacy: visibilityOptions;
   @ApiProperty() public author_id: number;
   @ApiPropertyOptional() public created_at?: string;
+  @ApiPropertyOptional() public updated_at?: string;
 }
