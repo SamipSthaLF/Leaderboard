@@ -9,7 +9,8 @@ export function generateAccessToken(
   const payload = {
     sub: user.id,
     username: user.username,
-    roles: user.roles.map((role) => role.roleName),
+    roles: user.roles.map((role) => role),
   };
+
   return jwtService.sign(payload);
 }

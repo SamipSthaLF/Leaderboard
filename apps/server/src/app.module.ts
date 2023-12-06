@@ -8,8 +8,6 @@ import { AppService } from '@/app.service';
 
 import { AuthModule } from '@/auth/auth.module';
 import { UserModule } from '@/user/user.module';
-import { RolesModule } from '@/roles/roles.module';
-import { UserrolesModule } from '@/userroles/userroles.module';
 
 import { AppController } from '@/app.controller';
 
@@ -26,8 +24,6 @@ import { JwtStrategy } from '@filter/jwt.strategy';
     }),
     AuthModule,
     UserModule,
-    RolesModule,
-    UserrolesModule,
   ],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],
