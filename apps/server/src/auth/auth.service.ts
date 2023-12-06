@@ -3,6 +3,7 @@ import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { HttpStatus, Injectable } from '@nestjs/common';
 
+import { RoleEnum } from '@/common/constants/role.enum';
 import { ErrorMessage } from '@common/errors/error.message';
 import { RestException } from '@common/exceptions/rest.exception';
 import { ErrorDescription } from '@common/errors/constants/description.error';
