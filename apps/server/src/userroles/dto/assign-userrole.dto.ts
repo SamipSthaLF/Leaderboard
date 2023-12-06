@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 import {
-  ArrayMinSize,
-  ArrayNotEmpty,
   IsArray,
   IsNumber,
+  ArrayMinSize,
+  ArrayNotEmpty,
 } from 'class-validator';
 
 export class AssignUserroleDto {
@@ -15,10 +15,10 @@ export class AssignUserroleDto {
     {},
     { each: true, message: 'Each element in rolesId must be a number' },
   )
-  @ApiProperty()
+  @ApiProperty({ default: [1] })
   rolesId: number[];
 
   @IsNumber({}, { message: 'UserId must be a number' })
-  @ApiProperty()
+  @ApiProperty({ default: 1 })
   userId: number;
 }

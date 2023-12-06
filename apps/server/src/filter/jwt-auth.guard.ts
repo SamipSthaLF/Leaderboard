@@ -1,16 +1,21 @@
 import {
-  ExecutionContext,
   Injectable,
+  ExecutionContext,
   UnauthorizedException,
 } from '@nestjs/common';
+
 import { Reflector } from '@nestjs/core';
+
 import { AuthGuard } from '@nestjs/passport';
 
+import { ROLES_KEY } from '@decorator/roles.decorator';
+
 import { ErrorMessage } from '@common/errors/error.message';
+
 import { RestException } from '@common/exceptions/rest.exception';
+
 import { ErrorDescription } from '@common/errors/constants/description.error';
 
-import { ROLES_KEY } from '@decorator/roles.decorator';
 /**
  * Custom JWT authentication guard that extends the `AuthGuard` from `@nestjs/passport`.
  * This guard also checks for roles specified using the `Roles` decorator.
@@ -79,7 +84,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     } else if (methodRoles !== undefined) {
       roles = methodRoles;
     }
-    console.log(roles, 'roles');
+    console.log(roles, 'asmin');
     if (!roles || roles.length < 1) {
       return true; // No roles specified, allow access
     }
@@ -106,7 +111,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
    * @returns {any} - The user object if authentication is successful.
    * @throws {RestException} - Throws a `RestException` if authentication fails.
    */
-  handleRequest(err: any, user: any, info: any): any {
+  handleRequest(err: any, user: any): any {
     if (err || !user) {
       const unauthorizedException = new UnauthorizedException();
       const errorMessage = new ErrorMessage(
