@@ -21,7 +21,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
    *
    * @param {string} accessToken - Google OAuth 2.0 access token.
    * @param {string} refreshToken - Google OAuth 2.0 refresh token.
-   * @param {any} profile - User profile data received from Google.
+   * @param {GoogleProfile} profile - User profile data received from Google.
    * @param {VerifyCallback} done - Passport callback for completing the authentication process.
    * @returns {Promise<void>} A Promise resolving to the transformed user object.
    */

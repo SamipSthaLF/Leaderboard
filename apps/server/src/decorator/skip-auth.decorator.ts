@@ -1,3 +1,5 @@
+import { SetMetadata } from '@nestjs/common';
+
 /**
  * A decorator function to mark a route or method to skip authentication.
  * @function
@@ -14,6 +16,4 @@
  *   }
  * }
  */
-import { SetMetadata } from '@nestjs/common';
-
 export const SkipAuth = () => SetMetadata('skipAuth', true);

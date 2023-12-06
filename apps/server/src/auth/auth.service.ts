@@ -6,16 +6,16 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HttpStatus, Injectable } from '@nestjs/common';
 
+import { RoleEnum } from '@/common/constants/role.enum';
 import { ErrorMessage } from '@common/errors/error.message';
 import { RestException } from '@common/exceptions/rest.exception';
 import { ErrorDescription } from '@common/errors/constants/description.error';
 
 import { User } from '@/user/entities/user.entity';
 
-import { generateAccessToken } from '@/auth/util/jwt.util';
-
-import { RoleEnum } from '@/common/constants/role.enum';
 import { RolesService } from '@/roles/roles.service';
+
+import { generateAccessToken } from '@/auth/util/jwt.util';
 
 @Injectable()
 export class AuthService {
@@ -47,11 +47,13 @@ export class AuthService {
    * @async
    * @function
    * @name createOrUpdateUser
-   * @param {any} user - The user information.
+   * @param {User} user - The user information.
    * @returns {Promise<{ user: User, message: string, accessToken: string }>} - An object containing user information, a success message, and an access token.
    * @throws {RestException} - Throws a `RestException` if no associated user is found or an error occurs during the process.
    */
-  createOrUpdateUser = async (user: any) => {
+  createOrUpdateUser = async (
+    user: UserDto,
+  ): Promise<{ user: User; message: string; accessToken: string }> => {
     if (!user || !user.email) {
       throw new RestException(
         new ErrorMessage(

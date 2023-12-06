@@ -1,6 +1,6 @@
 import { JwtService } from '@nestjs/jwt';
 
-import { User } from 'src/user/entities/user.entity';
+import { User } from '@/user/entities/user.entity';
 
 export function generateAccessToken(
   jwtService: JwtService,

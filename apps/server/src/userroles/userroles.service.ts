@@ -1,11 +1,10 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 
 import { UserService } from '@/user/user.service';
-
-import { Role } from '@/roles/entities/role.entity';
 import { RolesService } from '@/roles/roles.service';
 
-import { UpdateUserroleDto } from '@/userroles/dto/update-userrole.dto';
+import { Role } from '@/roles/entities/role.entity';
+
 import { AssignUserroleDto } from '@/userroles/dto/assign-userrole.dto';
 
 import { ErrorMessage } from '@common/errors/error.message';
@@ -31,7 +30,7 @@ export class UserrolesService {
       );
     }
 
-    var roleList: Role[] = [];
+    const roleList: Role[] = [];
     await Promise.all(
       assignUserroleDto.rolesId.map(async (roleId) => {
         try {
@@ -60,20 +59,4 @@ export class UserrolesService {
 
     return 'This action assigns user with roles';
   };
-
-  findAll() {
-    return `This action returns all userroles`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} userrole`;
-  }
-
-  update(id: number, updateUserroleDto: UpdateUserroleDto) {
-    return `This action updates a #${id} userrole`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} userrole`;
-  }
 }

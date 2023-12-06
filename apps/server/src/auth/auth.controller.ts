@@ -1,4 +1,5 @@
-import { Controller, Get, Request, UseGuards } from '@nestjs/common';
+import { Get, Request, Controller, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 import { Request as HttpRequest } from 'express';
 
@@ -7,7 +8,6 @@ import { SkipAuth } from '@decorator/skip-auth.decorator';
 import { AuthService } from '@/auth/auth.service';
 
 import { AuthenticationGuard } from '@/auth/guards/google-oauth-guard';
-import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('auth')
 @SkipAuth()
@@ -17,7 +17,7 @@ export class AuthController {
 
   @Get()
   @UseGuards(AuthenticationGuard)
-  async googleAuth(@Request() req: HttpRequest) {}
+  async googleAuth() {}
 
   @Get('redirect')
   @UseGuards(AuthenticationGuard)
@@ -28,6 +28,9 @@ export class AuthController {
   @Get('google/callback')
   @UseGuards(AuthenticationGuard)
   async callbacktest(@Request() req: HttpRequest) {
-    return await this.authService.createOrUpdateUser(req.user);
+    if (req.user) {
+      //typing has user as optional so need to add this case check.
+      return await this.authService.createOrUpdateUser(req.user);
+    }
   }
 }
