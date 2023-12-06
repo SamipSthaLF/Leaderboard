@@ -1,6 +1,10 @@
 import { AuthGuard } from '@nestjs/passport';
 import { ConfigService } from '@nestjs/config';
-import { Injectable, ExecutionContext } from '@nestjs/common';
+import {
+  Injectable,
+  ExecutionContext,
+  UnauthorizedException,
+} from '@nestjs/common';
 
 @Injectable()
 export class AuthenticationGuard extends AuthGuard('google') {
@@ -28,7 +32,6 @@ export class AuthenticationGuard extends AuthGuard('google') {
       // If x-api-key is present, bypass authentication
       return true;
     }
-
     // If x-api-key is not present, proceed with the default authentication logic
     return super.canActivate(context);
   }
