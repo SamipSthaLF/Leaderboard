@@ -1,9 +1,17 @@
+import { SetMetadata } from '@nestjs/common';
+
+/**
+ * The key used to store roles metadata.
+ * @constant {string}
+ */
+export const ROLES_KEY = 'roles';
+
 /**
  * A decorator function to associate roles with a route or method.
  * @function
  * @name Roles
  * @param {...string} roles - The roles to be associated with the route or method.
- * @returns {Function} - The decorator function.
+ * @returns {MethodDecorator & ClassDecorator} - The method decorator function.
  * @example
  * // Usage in a NestJS controller:
  * \@Controller('example')

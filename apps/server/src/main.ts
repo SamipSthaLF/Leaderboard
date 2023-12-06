@@ -20,19 +20,6 @@ async function bootstrap() {
   //seed user
   await userSeed.seed();
 
-  const roleSeed = app.get(RoleSeed); // Inject RoleSeed
-  const userSeed = app.get(UserSeed);
-  const userroleSeed = app.get(UserroleSeed);
-
-  //seed role
-  await roleSeed.seed();
-
-  //seed user
-  await userSeed.seed();
-
-  //seed userrole
-  await userroleSeed.seed();
-
   await app.listen(3001);
 }
 bootstrap();
