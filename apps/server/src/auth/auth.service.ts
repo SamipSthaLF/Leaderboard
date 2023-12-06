@@ -13,15 +13,13 @@ import { ErrorDescription } from '@common/errors/constants/description.error';
 
 import { User } from '@/user/entities/user.entity';
 
-import { RolesService } from '@/roles/roles.service';
-
 import { generateAccessToken } from '@/auth/util/jwt.util';
+import { UserDto } from '@/user/dto/user.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
-    private readonly roleService: RolesService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -58,9 +56,9 @@ export class AuthService {
    * @throws {RestException} - Throws a `RestException` if no associated user is found or an error occurs during the process.
    */
   createOrUpdateUser = async (
-    user: UserDto,
+    userDto: UserDto,
   ): Promise<{ user: User; message: string; accessToken: string }> => {
-    if (!user || !user.email) {
+    if (!userDto || !userDto.email) {
       throw new RestException(
         new ErrorMessage(
           HttpStatus.NOT_ACCEPTABLE,
@@ -71,42 +69,25 @@ export class AuthService {
     }
 
     // Check if the user already exists
-    const existingUser = await this.userRepository.findOne({
-      where: { username: user.email },
+    let user: User | null = await this.userRepository.findOne({
+      where: { username: userDto.email },
     });
 
-    let newUser: User;
-
-    if (!existingUser) {
+    if (!user) {
       // Create a new user if not found
-      newUser = this.userRepository.create({
-        username: user.email,
+      user = this.userRepository.create({
+        username: userDto.email,
         createdOn: new Date().toDateString(),
       });
 
-      // Assign default role if available
-      const defaultRole = await this.roleService.findByRoleName(RoleEnum.User);
-      if (defaultRole) {
-        newUser.roles = [defaultRole];
-      }
-    } else {
-      // Use existing user
-      newUser = existingUser;
+      // Assign default role
+      user.roles = [RoleEnum.Default];
     }
 
-    // Update user's last login time
-    newUser.lastLoginTime = new Date().toDateString();
-
     // Save the user in the database
-    const savedUser = await this.userRepository.save(newUser);
+    const savedUser = await this.userRepository.save(user);
 
-    // Retrieve user information with roles
-    const userWithRoles = await this.userRepository.findOne({
-      where: { id: savedUser.id },
-      relations: ['roles'],
-    });
-
-    if (!userWithRoles) {
+    if (!savedUser) {
       throw new RestException(
         new ErrorMessage(
           HttpStatus.NOT_ACCEPTABLE,
@@ -120,7 +101,7 @@ export class AuthService {
     return {
       user: savedUser,
       message: 'Successful Login from Google Oauth',
-      accessToken: generateAccessToken(this.jwtService, userWithRoles), // Make sure JwtService is appropriately imported and available
+      accessToken: generateAccessToken(this.jwtService, savedUser), // Make sure JwtService is appropriately imported and available
     };
   };
 }

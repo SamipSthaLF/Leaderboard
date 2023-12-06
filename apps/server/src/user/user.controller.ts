@@ -12,10 +12,11 @@ import {
 import { ApiBearerAuth } from '@nestjs/swagger';
 
 import { UserService } from '@/user/user.service';
-import { CreateUserDto } from '@/user/dto/create-user.dto';
-import { UpdateUserDto } from '@/user/dto/update-user.dto';
 
 import { Roles } from '@/decorator/roles.decorator';
+
+import { CreateUserDto } from '@/user/dto/create-user.dto';
+import { UpdateUserDto } from '@/user/dto/update-user.dto';
 
 @Controller('user')
 @Roles('Admin')

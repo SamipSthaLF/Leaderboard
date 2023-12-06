@@ -13,6 +13,7 @@ import { ROLES_KEY } from '@decorator/roles.decorator';
 import { ErrorMessage } from '@common/errors/error.message';
 import { RestException } from '@common/exceptions/rest.exception';
 import { ErrorDescription } from '@common/errors/constants/description.error';
+import { SKIP_AUTH_KEY } from '@/decorator/skip-auth.decorator';
 
 /**
  * Custom JWT authentication guard that extends the `AuthGuard` from `@nestjs/passport`.
@@ -37,7 +38,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
    */
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isAuthSkipped = this.reflector.getAllAndOverride<boolean>(
-      'skipAuth',
+      SKIP_AUTH_KEY,
       [context.getHandler(), context.getClass()],
     );
 
@@ -75,13 +76,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     let roles: string[] = [];
 
     // Check if both controllerRoles and methodRoles are defined before combining
-    if (controllerRoles !== undefined && methodRoles !== undefined) {
-      roles = [...controllerRoles, ...methodRoles];
-    } else if (controllerRoles !== undefined) {
-      roles = controllerRoles;
-    } else if (methodRoles !== undefined) {
-      roles = methodRoles;
-    }
+    // Optimized code
+    roles = [...(controllerRoles || []), ...(methodRoles || [])];
 
     if (roles.length) {
       return true; // No roles specified, allow access
@@ -123,6 +119,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       throw new RestException(errorMessage);
     }
 
-    return user as TUser; //unsure how  not to use the return type as any here.
+    return user as unknown as TUser; //unsure how  not to use the return type as any here.
   }
 }

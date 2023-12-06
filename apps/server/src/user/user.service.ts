@@ -30,10 +30,13 @@ export class UserService {
   /**
    * Creates a new user based on the provided DTO.
    * @param {CreateUserDto} createUserDto - The DTO containing user creation information.
-   * @returns {string} - A message indicating the success of the operation.
+   * @returns {Promise<User>} - A message indicating the success of the operation.
    */
-  create(createUserDto: CreateUserDto): string {
-    return 'This action adds a new user';
+  create(createUserDto: CreateUserDto) {
+    const user = this.userRepository.create({
+      username: createUserDto.username,
+    });
+    return this.userRepository.save(user);
   }
 
   /**
@@ -41,7 +44,7 @@ export class UserService {
    * @returns {Promise<User[]>} - An array of users with associated roles.
    */
   findAll(): Promise<User[]> {
-    return this.userRepository.find({ relations: ['roles'] });
+    return this.userRepository.find();
   }
 
   /**
@@ -57,10 +60,10 @@ export class UserService {
    * Updates a user based on the provided ID and DTO.
    * @param {number} id - The ID of the user to update.
    * @param {UpdateUserDto} updateUserDto - The DTO containing user update information.
-   * @returns {string} - A message indicating the success of the operation.
+   * @returns {Promise<UpdateResult>} - A message indicating the success of the operation.
    */
-  update(id: number, updateUserDto: UpdateUserDto): string {
-    return `This action updates a #${id} user`;
+  update(id: number, updateUserDto: UpdateUserDto) {
+    return this.userRepository.update(id, updateUserDto);
   }
 
   /**
