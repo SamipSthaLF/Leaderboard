@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export type visibilityOptions = 'private' | 'public';
+
 export class CreateChallengeDto {
   @ApiProperty({ default: 'KPI' }) public title: string;
 
