@@ -17,5 +17,10 @@
     "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true
-  }
+  },
+  "include": [
+    "src/**/*.ts",  // Include your source files
+    "typings/**/*.d.ts"  // Include your declaration files
+
+  ]
 }

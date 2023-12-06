@@ -1,13 +1,31 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { DataSource } from 'typeorm';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
+
+import { Module } from '@nestjs/common';
+
 import { AppService } from './app.service';
-import databaseConfig from './config/database.config';
+
+import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { AuthModule } from './auth/auth.module';
+
+import { UserModule } from './user/user.module';
+
+import { AppController } from './app.controller';
+
+import getDBConfig from './config/typeorm.config';
+
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
-  imports: [ConfigModule.forRoot(), TypeOrmModule.forRoot(databaseConfig())],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    TypeOrmModule.forRootAsync({
+      useFactory: (configService: ConfigService) => getDBConfig(configService),
+      inject: [ConfigService],
+    }),
+    AuthModule,
+    UserModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
