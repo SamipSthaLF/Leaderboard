@@ -1,7 +1,7 @@
-import { User } from 'src/user/entities/user.entity';
+import { UserDto } from '@/user/dto/user.dto';
 
 declare module 'express' {
   interface Request {
-    user?: User;
+    user?: UserDto;
   }
 }
