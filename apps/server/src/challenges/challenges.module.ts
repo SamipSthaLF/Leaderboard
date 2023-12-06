@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { ChallengesSeed } from './seed/challenges.seed';
+import { ChallengesSeed } from '@/challenges/seed/challenges.seed';
 
-import { Challenge } from './entities/challenges.entity';
+import { Challenge } from '@/challenges/entities/challenges.entity';
 
-import { ChallengesService } from './challenges.service';
+import { ChallengesService } from '@/challenges/challenges.service';
 
-import { ChallengesController } from './challenges.controller';
+import { ChallengesController } from '@/challenges/challenges.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Challenge])],

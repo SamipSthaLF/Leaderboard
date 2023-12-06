@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { ChallengesService } from '../challenges.service';
+import { ChallengesService } from '@/challenges/challenges.service';
 
 @Injectable()
 export class ChallengesSeed {

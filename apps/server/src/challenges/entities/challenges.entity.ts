@@ -2,13 +2,13 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   Column,
   Entity,
-  BeforeUpdate,
   BeforeInsert,
+  BeforeUpdate,
   CreateDateColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { visibilityOptions } from '../dto/challenges.dto';
+import { visibilityOptions } from '@/challenges/dto/challenges.dto';
 
 @Entity()
 export class Challenge {

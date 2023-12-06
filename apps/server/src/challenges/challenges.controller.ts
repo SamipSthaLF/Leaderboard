@@ -12,18 +12,22 @@ import {
   Patch,
   Delete,
   HttpCode,
-  HttpStatus,
   Controller,
+  HttpStatus,
 } from '@nestjs/common';
 
 import { Roles } from 'src/decorator/roles.decorator';
 
 import { RoleEnum } from '@/common/constants/role.enum';
 
-import { CreateChallengeDto, UpdateChallengeDto } from './dto/challenges.dto';
+import {
+  CreateChallengeDto,
+  UpdateChallengeDto,
+} from '@/challenges/dto/challenges.dto';
 
-import { ChallengesService } from './challenges.service';
-import { Challenge } from './entities/challenges.entity';
+import { ChallengesService } from '@/challenges/challenges.service';
+
+import { Challenge } from '@/challenges/entities/challenges.entity';
 
 @ApiTags('Challenges')
 @Controller('challenges')
