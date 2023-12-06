@@ -1,6 +1,6 @@
 import { HttpException } from '@nestjs/common';
 
-import { ErrorMessage } from '../errors/error.message';
+import { ErrorMessage } from '@common/errors/error.message';
 
 export class RestException extends HttpException {
   constructor(errorMessage: ErrorMessage) {

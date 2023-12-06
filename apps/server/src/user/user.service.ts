@@ -1,16 +1,16 @@
-import { Repository } from 'typeorm';
-
-import { User } from './entities/user.entity';
-
 import { InjectRepository } from '@nestjs/typeorm';
 import { HttpStatus, Injectable } from '@nestjs/common';
 
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { Repository } from 'typeorm';
 
-import { ErrorMessage } from 'src/common/errors/error.message';
-import { RestException } from 'src/common/exceptions/rest.exception';
-import { ErrorDescription } from 'src/common/errors/constants/description.error';
+import { User } from '@/user/entities/user.entity';
+
+import { CreateUserDto } from '@/user/dto/create-user.dto';
+import { UpdateUserDto } from '@/user/dto/update-user.dto';
+
+import { ErrorMessage } from '@common/errors/error.message';
+import { RestException } from '@common/exceptions/rest.exception';
+import { ErrorDescription } from '@common/errors/constants/description.error';
 
 /**
  * Service responsible for handling CRUD operations related to users.

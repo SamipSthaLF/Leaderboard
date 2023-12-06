@@ -18,7 +18,7 @@ import {
 
 import { Roles } from 'src/decorator/roles.decorator';
 
-import { RoleEnum } from 'src/roles/seed/role.enum';
+import { RoleEnum } from '@/common/constants/role.enum';
 
 import { CreateChallengeDto, UpdateChallengeDto } from './dto/challenges.dto';
 

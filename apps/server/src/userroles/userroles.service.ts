@@ -1,16 +1,16 @@
-import { UserService } from 'src/user/user.service';
-
-import { Role } from 'src/roles/entities/role.entity';
-import { RolesService } from 'src/roles/roles.service';
-
 import { HttpStatus, Injectable } from '@nestjs/common';
 
-import { UpdateUserroleDto } from './dto/update-userrole.dto';
-import { AssignUserroleDto } from './dto/assign-userrole.dto';
+import { UserService } from '@/user/user.service';
 
-import { ErrorMessage } from 'src/common/errors/error.message';
-import { RestException } from 'src/common/exceptions/rest.exception';
-import { ErrorDescription } from 'src/common/errors/constants/description.error';
+import { Role } from '@/roles/entities/role.entity';
+import { RolesService } from '@/roles/roles.service';
+
+import { UpdateUserroleDto } from '@/userroles/dto/update-userrole.dto';
+import { AssignUserroleDto } from '@/userroles/dto/assign-userrole.dto';
+
+import { ErrorMessage } from '@common/errors/error.message';
+import { RestException } from '@common/exceptions/rest.exception';
+import { ErrorDescription } from '@common/errors/constants/description.error';
 
 @Injectable()
 export class UserrolesService {

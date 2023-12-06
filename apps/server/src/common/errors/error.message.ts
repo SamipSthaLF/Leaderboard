@@ -1,5 +1,3 @@
-import { ErrorDescription } from './constants/description.error';
-
 /**
  * Represents an error message with detailed information.
  * @class

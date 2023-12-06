@@ -23,14 +23,14 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
    * @param {string} refreshToken - Google OAuth 2.0 refresh token.
    * @param {any} profile - User profile data received from Google.
    * @param {VerifyCallback} done - Passport callback for completing the authentication process.
-   * @returns {Promise<any>} A Promise resolving to the transformed user object.
+   * @returns {Promise<void>} A Promise resolving to the transformed user object.
    */
   async validate(
     accessToken: string,
     refreshToken: string,
-    profile: any,
+    profile: GoogleProfile, //if other properties are need add to GoogleProfile
     done: VerifyCallback,
-  ): Promise<any> {
+  ) {
     // Extract relevant information from the Google profile
     const { name, emails, photos } = profile;
 
