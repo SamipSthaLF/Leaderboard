@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
 
-import { Challenge } from './entities/challenges.entity';
-import { CreateChallengeDto } from './dto/challenges.dto';
+import { Challenge } from '@/challenges/entities/challenges.entity';
+import { CreateChallengeDto } from '@/challenges/dto/challenges.dto';
 
 @Injectable()
 export class ChallengesService {
