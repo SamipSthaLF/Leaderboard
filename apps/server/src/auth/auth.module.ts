@@ -3,17 +3,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
+import getJwtConfiguration from '@config/jwt.config';
 
-import { User } from 'src/user/entities/user.entity';
+import { AuthService } from '@/auth/auth.service';
+import { AuthController } from '@/auth/auth.controller';
+import { GoogleStrategy } from '@/auth/strategy/google-strategy';
 
-import { Role } from 'src/roles/entities/role.entity';
-import { RolesService } from 'src/roles/roles.service';
+import { Role } from '@/roles/entities/role.entity';
+import { RolesService } from '@/roles/roles.service';
 
-import getJwtConfiguration from 'src/config/jwt.config';
-
-import { GoogleStrategy } from './strategy/google-strategy';
+import { User } from '@/user/entities/user.entity';
 
 @Module({
   imports: [

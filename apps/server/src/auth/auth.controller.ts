@@ -1,12 +1,12 @@
-import { AuthService } from './auth.service';
+import { Controller, Get, Request, UseGuards } from '@nestjs/common';
 
 import { Request as HttpRequest } from 'express';
 
-import { SkipAuth } from 'src/decorator/skip-auth.decorator';
+import { SkipAuth } from '@decorator/skip-auth.decorator';
 
-import { AuthenticationGuard } from './guards/google-oauth-guard';
+import { AuthService } from '@/auth/auth.service';
 
-import { Controller, Get, Request, UseGuards } from '@nestjs/common';
+import { AuthenticationGuard } from '@/auth/guards/google-oauth-guard';
 
 @Controller('auth')
 @SkipAuth()

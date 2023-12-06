@@ -9,10 +9,9 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
-import { UserrolesService } from './userroles.service';
-
-import { AssignUserroleDto } from './dto/assign-userrole.dto';
-import { UpdateUserroleDto } from './dto/update-userrole.dto';
+import { UserrolesService } from '@/userroles/userroles.service';
+import { AssignUserroleDto } from '@/userroles/dto/assign-userrole.dto';
+import { UpdateUserroleDto } from '@/userroles/dto/update-userrole.dto';
 
 @Controller('userroles')
 @ApiBearerAuth()

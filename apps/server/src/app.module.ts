@@ -4,21 +4,21 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-import { AppService } from './app.service';
+import { AppService } from '@/app.service';
 
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from '@/auth/auth.module';
 
-import { UserModule } from './user/user.module';
+import { UserModule } from '@/user/user.module';
 
-import { AppController } from './app.controller';
+import { AppController } from '@/app.controller';
 
-import getDBConfig from './config/typeorm.config';
+import getDBConfig from '@/config/typeorm.config';
 
-import { RolesModule } from './roles/roles.module';
+import { RolesModule } from '@/roles/roles.module';
 
-import { JwtStrategy } from './filter/jwt.strategy';
+import { JwtStrategy } from '@filter/jwt.strategy';
 
-import { UserrolesModule } from './userroles/userroles.module';
+import { UserrolesModule } from '@/userroles/userroles.module';
 
 @Module({
   imports: [
