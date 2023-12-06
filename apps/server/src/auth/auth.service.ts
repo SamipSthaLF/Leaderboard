@@ -24,7 +24,12 @@ export class AuthService {
     private readonly roleService: RolesService,
     private readonly jwtService: JwtService,
   ) {}
-
+  /**
+   * Perform request authentication.
+   *
+   * @param {Request} req - Express request object.
+   * @returns {Promise<string | { message: string, user: any }>} Authentication result.
+   */
   requestAuthentication = async (req: Request) => {
     // Check if the request has a valid API key for authentication bypass
     if (req.headers['x-api-key'] === process.env.STATIC_API_TOKEN) {
