@@ -1,9 +1,9 @@
 import { Title } from '@mantine/core';
 
-export default function Challenges() {
+export default function Reviews() {
   return (
     <section>
-      <Title>Challenges</Title>
+      <Title>Reviews</Title>
     </section>
   );
 }
