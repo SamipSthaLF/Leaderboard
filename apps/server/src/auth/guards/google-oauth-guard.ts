@@ -1,6 +1,10 @@
 import { AuthGuard } from '@nestjs/passport';
 import { ConfigService } from '@nestjs/config';
-import { Injectable, ExecutionContext } from '@nestjs/common';
+import {
+  Injectable,
+  ExecutionContext,
+  UnauthorizedException,
+} from '@nestjs/common';
 
 @Injectable()
 export class AuthenticationGuard extends AuthGuard('google') {
@@ -19,7 +23,7 @@ export class AuthenticationGuard extends AuthGuard('google') {
    * @param {ExecutionContext} context - NestJS ExecutionContext containing information about the current execution context.
    * @returns {boolean} A boolean indicating whether the route should be activated for authentication.
    */
-  canActivate(context: ExecutionContext) {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     // Check if x-api-key is present in the headers
     const request = context.switchToHttp().getRequest();
     const apiKey = request.headers['x-api-key'];
@@ -28,8 +32,8 @@ export class AuthenticationGuard extends AuthGuard('google') {
       // If x-api-key is present, bypass authentication
       return true;
     }
-
     // If x-api-key is not present, proceed with the default authentication logic
-    return super.canActivate(context);
+    const result = await super.canActivate(context);
+    return result as boolean;
   }
 }

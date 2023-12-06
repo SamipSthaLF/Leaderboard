@@ -2,11 +2,14 @@ import { AuthService } from './auth.service';
 
 import { Request as HttpRequest } from 'express';
 
+import { SkipAuth } from 'src/decorator/skip-auth.decorator';
+
 import { AuthenticationGuard } from './guards/google-oauth-guard';
 
 import { Controller, Get, Request, UseGuards } from '@nestjs/common';
 
 @Controller('auth')
+@SkipAuth()
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -16,14 +19,13 @@ export class AuthController {
 
   @Get('redirect')
   @UseGuards(AuthenticationGuard)
-  authenticationRedirect(@Request() req: HttpRequest) {
-    if (req.user) {
-    }
-    return this.authService.requestAuthentication(req);
+  async authenticationRedirect(@Request() req: HttpRequest) {
+    return await this.authService.requestAuthentication(req);
   }
 
   @Get('google/callback')
-  callbacktest() {
-    return 'Google Authentication success. Callback url reached';
+  @UseGuards(AuthenticationGuard)
+  async callbacktest(@Request() req: HttpRequest) {
+    return await this.authService.createOrUpdateUser(req.user);
   }
 }
