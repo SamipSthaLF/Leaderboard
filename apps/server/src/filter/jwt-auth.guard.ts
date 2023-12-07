@@ -15,7 +15,6 @@ import { RoleEnum } from '@/common/constants/role.enum';
 import { ErrorMessage } from '@common/errors/error.message';
 import { RestException } from '@common/exceptions/rest.exception';
 import { ErrorDescription } from '@common/errors/constants/description.error';
-import { SKIP_AUTH_KEY } from '@/decorator/skip-auth.decorator';
 
 /**
  * Custom JWT authentication guard that extends the `AuthGuard` from `@nestjs/passport`.

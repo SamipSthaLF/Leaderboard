@@ -48,13 +48,17 @@ export class AuthService {
    * @throws {RestException} When `userDto` lacks a valid email or in case of database operation failures.
    */
   private async createUser(userDto: UserDto): Promise<User> {
-    return await this.userService.create({
+    const newUser = this.userRepository.create({
       username: userDto.email,
+      roles: [RoleEnum.USER],
     });
+
+    return this.userRepository.save(newUser);
   }
 
   /**
    * Service method to create or update a user based on the provided information.
+   *
    *
    * @async
    * @function
@@ -66,37 +70,17 @@ export class AuthService {
   createOrUpdateUser = async (
     request: Request,
   ): Promise<{ user: User; message: string; accessToken: string }> => {
-    const userDto = request.user;
     if (!userDto?.email) {
       throw RestException.throwNoAssociatedUserException();
     }
     // Check if the user already exists
     const user =
-      (await this.userService.findByUserName(userDto.email)) ||
-      (await this.createUser(userDto));
+      (await this.userRepository.findOne({
+        where: { username: userDto.email },
+      })) || (await this.createUser(userDto));
 
     if (!user) {
-      // Create a new user if not found
-      // Create a new user if not found
-      user = this.userRepository.create({
-        username: userDto.email,
-        roles: [RoleEnum.User],
-      });
-
-      // Assign default role
-    }
-
-    // Save the user in the database
-    const savedUser = await this.userRepository.save(user);
-
-    if (!savedUser) {
-      throw new RestException(
-        new ErrorMessage(
-          HttpStatus.NOT_ACCEPTABLE,
-          HttpStatus.NOT_ACCEPTABLE.toLocaleString(),
-          ErrorDescription.NO_ASSOCIATED_USER_FOUND,
-        ),
-      );
+      throw RestException.throwNoAssociatedUserException();
     }
 
     // Return user information, success message, and an access token
