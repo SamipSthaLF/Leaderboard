@@ -1,4 +1,12 @@
-import { Column, Entity, BaseEntity, PrimaryGeneratedColumn } from 'typeorm';
+import { RoleEnum } from '@/common/constants/role.enum';
+
+import {
+  Column,
+  Entity,
+  BaseEntity,
+  CreateDateColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class User extends BaseEntity {
@@ -8,8 +16,14 @@ export class User extends BaseEntity {
   @Column()
   username: string;
 
-  @Column()
+  @CreateDateColumn()
   createdOn: string;
 
-  roles: string[];
+  @Column({
+    type: 'enum',
+    enum: RoleEnum,
+    array: true,
+    default: [RoleEnum.USER],
+  })
+  roles: RoleEnum[];
 }

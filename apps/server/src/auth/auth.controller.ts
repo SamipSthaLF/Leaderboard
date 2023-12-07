@@ -1,5 +1,5 @@
-import { Get, Request, Controller, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { Get, Request, Controller, UseGuards } from '@nestjs/common';
 
 import { Request as HttpRequest } from 'express';
 
