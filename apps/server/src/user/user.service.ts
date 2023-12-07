@@ -14,8 +14,6 @@ import { ErrorDescription } from '@common/errors/constants/description.error';
 
 import { RoleEnum } from '@/common/constants/role.enum';
 
-import { RoleEnum } from '@/common/constants/role.enum';
-
 /**
  * Service responsible for handling CRUD operations related to users.
  * @class
@@ -40,7 +38,7 @@ export class UserService {
     const user = this.userRepository.create({
       username: createUserDto.username,
       roles: [RoleEnum.USER],
-    });
+    }); //todo add default role
     return this.userRepository.save(user);
   }
 
@@ -63,6 +61,8 @@ export class UserService {
 
   /**
    * Updates a user based on the provided ID and DTO.
+   *
+   * @async
    *
    * @async
    *
@@ -93,6 +93,7 @@ export class UserService {
 
   /**
    * Removes a user based on the provided ID.
+   * @async
    * @async
    * @async
    * @async

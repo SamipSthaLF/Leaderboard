@@ -16,14 +16,13 @@ export class User extends BaseEntity {
   @Column()
   username: string;
 
-  @CreateDateCreateDateColumn()
+  @CreateDateColumn()
   createdOn: string;
 
-  @Column({
-    type: 'enum',
-    enum: RoleEnum,
-    array: true,
-    default: [RoleEnum.USER],
+  @Column('enum', { enum: RoleEnum, array: true, default: [RoleEnum.User] })
+  @JoinTable({
+    name: 'users_roles',
+    joinColumn: { name: 'user_id', referencedColumnName: 'id' },
   })
   roles: RoleEnum[];
 }
