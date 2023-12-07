@@ -76,19 +76,29 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     let roles: string[] = [];
 
     // Check if both controllerRoles and methodRoles are defined before combining
-    // Optimized code
-    roles = [...(controllerRoles || []), ...(methodRoles || [])];
+    if (controllerRoles !== undefined && methodRoles !== undefined) {
+      roles = [...controllerRoles, ...methodRoles];
+    } else if (controllerRoles !== undefined) {
+      roles = controllerRoles;
+    } else if (methodRoles !== undefined) {
+      roles = methodRoles;
+    }
+    console.log(roles);
 
-    if (roles.length) {
+    if (!roles.length) {
       return true; // No roles specified, allow access
     }
 
     const request = context.switchToHttp().getRequest();
     const user = request.user;
 
+    console.log(user);
     if (
-      user?.roles.length ||
-      !roles.some((role) => user.roles.includes(role))
+      !user ||
+      !user.roles.length ||
+      !roles.some((role) =>
+        user.roles.some((userRole: string) => userRole === role),
+      )
     ) {
       throw new UnauthorizedException('User does not have the required roles');
     }
