@@ -14,6 +14,8 @@ import { ErrorDescription } from '@common/errors/constants/description.error';
 
 import { RoleEnum } from '@/common/constants/role.enum';
 
+import { RoleEnum } from '@/common/constants/role.enum';
+
 /**
  * Service responsible for handling CRUD operations related to users.
  * @class
@@ -37,7 +39,7 @@ export class UserService {
   create(createUserDto: CreateUserDto) {
     const user = this.userRepository.create({
       username: createUserDto.username,
-    }); //todo add default role
+    }); //todo add default role //todo add default role
     return this.userRepository.save(user);
   }
 
@@ -62,6 +64,8 @@ export class UserService {
    * Updates a user based on the provided ID and DTO.
    *
    * @async
+   *
+   * @async
    * @param {number} id - The ID of the user to update.
    * @param {UpdateUserDto} updateUserDto - The DTO containing user update information.
    * @param {Request} request - The request from express.
@@ -72,13 +76,7 @@ export class UserService {
       where: { id: id },
     });
     if (!existingUser) {
-      throw new RestException(
-        new ErrorMessage(
-          HttpStatus.NOT_ACCEPTABLE,
-          HttpStatus.NOT_ACCEPTABLE.toString(),
-          ErrorDescription.NO_ASSOCIATED_USER_FOUND,
-        ),
-      );
+      throw RestException.throwNoAssociatedUserException();
     }
     const updatedRoles: RoleEnum[] = updateUserDto.roles.map(
       (roleString: string) => {
@@ -94,6 +92,7 @@ export class UserService {
 
   /**
    * Removes a user based on the provided ID.
+   * @async
    * @async
    * @async
    * @param {number} id - The ID of the user to remove.
