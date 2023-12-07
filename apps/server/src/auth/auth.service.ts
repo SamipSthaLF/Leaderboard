@@ -67,7 +67,6 @@ export class AuthService {
         ),
       );
     }
-
     // Check if the user already exists
     let user: User | null = await this.userRepository.findOne({
       where: { username: userDto.email },
@@ -77,11 +76,10 @@ export class AuthService {
       // Create a new user if not found
       user = this.userRepository.create({
         username: userDto.email,
-        createdOn: new Date().toDateString(),
+        roles: [RoleEnum.User],
       });
 
       // Assign default role
-      user.roles = [RoleEnum.Default];
     }
 
     // Save the user in the database

@@ -3,6 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { UserService } from '@/user/user.service';
 import { CreateUserDto } from '@/user/dto/create-user.dto';
 
+import { RoleEnum } from '@/common/constants/role.enum';
+
 /**
  * Service for seeding initial users in the database.
  *
@@ -31,9 +33,11 @@ export class UserSeed {
 
     if (existingUsers.length === 0) {
       // Users do not exist, seed some initial data
-      this.userService.create(
+      const user = await this.userService.create(
         new CreateUserDto('asminshrestha@lftechnology.com'),
       );
+      user.roles = [RoleEnum.Admin];
+      this.userService.saveUser(user);
       // Add more users as needed
     }
   }
