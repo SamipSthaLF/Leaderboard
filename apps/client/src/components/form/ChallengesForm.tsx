@@ -1,52 +1,61 @@
 'use client';
 
-import { Button, Flex, Paper, Select, Textarea, TextInput, ComboboxItem } from '@mantine/core';
-import { useForm } from '@mantine/form';
+import { Button, Flex, NumberInput, Paper, Textarea, TextInput } from '@mantine/core';
+import { useForm, zodResolver } from '@mantine/form';
+import { z } from 'zod';
 
-const options: ComboboxItem[] = [
-  {
-    label: 'Public',
-    value: 'public'
-  },
-  {
-    label: 'Private',
-    value: 'private'
-  }
-];
-
-const handleSubmit = async (values: any) => {
-  console.log('submit', values);
-};
 const ChallengesForm = () => {
-  const form = useForm({});
+  const schema = z.object({
+    challengeScore: z.number().min(1, {
+      message: 'Please enter a valid score'
+    }),
+    challengeTitle: z.string().min(2, {
+      message: 'Please enter a valid title'
+    }),
+    description: z.string().min(10, {
+      message: 'Please enter a valid description that is clear'
+    })
+  });
+  const form = useForm({
+    initialValues: {
+      challengeScore: '',
+      challengeTitle: '',
+      description: ''
+    },
+    validate: zodResolver(schema),
+    validateInputOnBlur: true
+  });
 
+  const handleSubmit = async (values: any) => {
+    form.validate();
+    console.log('submit', values);
+    form.setInitialValues({
+      challengeScore: '',
+      challengeTitle: '',
+      description: ''
+    });
+  };
   return (
     <Paper withBorder radius={'8px'} shadow="md" p="1.5rem">
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Flex direction="column" gap={'1rem'}>
           <Flex direction="row" justify="space-between" gap="1em">
-            <TextInput
+            <NumberInput
               radius={'6px'}
+              hideControls
               w={'100%'}
               label="Challenge Score"
               placeholder="Enter challenge score"
               {...form.getInputProps('challengeScore')}
             />
-            <Select
-              // styles={{ dropdown: { maxHeight: 200, overflowY: 'auto' } }}
+            <TextInput
               radius={'6px'}
               w={'100%'}
-              label="Privacy"
-              data={options}
-              {...form.getInputProps('privacy')}
+              label="Challenge Title"
+              placeholder="Enter title"
+              {...form.getInputProps('challengeTitle')}
             />
           </Flex>
-          <TextInput
-            radius={'6px'}
-            label="Challenge Title"
-            placeholder="Enter title"
-            {...form.getInputProps('challengeTitle')}
-          />
           <Textarea
             radius={'6px'}
             label="Description"
@@ -54,11 +63,10 @@ const ChallengesForm = () => {
             {...form.getInputProps('description')}
           />
           <Flex direction="row" gap={'1.5rem'} justify="flex-end" align="center">
-            {/* TODO add colors from theme */}
-            <Button type="button" radius={'6px'} variant="outline" color={'#102B7B'}>
+            <Button type="button" radius={'6px'} variant="outline" c="cascade-blue.9">
               Cancel
             </Button>
-            <Button type="submit" radius={'6px'} variant="filled" color={'#102B7B'}>
+            <Button type="submit" radius={'6px'} variant="filled">
               Add Challenge
             </Button>
           </Flex>
