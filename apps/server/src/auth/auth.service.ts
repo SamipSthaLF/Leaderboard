@@ -70,6 +70,7 @@ export class AuthService {
   createOrUpdateUser = async (
     request: Request,
   ): Promise<{ user: User; message: string; accessToken: string }> => {
+    const userDto = request.user;
     if (!userDto?.email) {
       throw RestException.throwNoAssociatedUserException();
     }
