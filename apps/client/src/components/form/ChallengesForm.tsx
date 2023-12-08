@@ -15,7 +15,6 @@ const options: ComboboxItem[] = [
 ];
 
 const handleSubmit = async (values: any) => {
-    
   console.log('submit', values);
 };
 const ChallengesForm = () => {
@@ -34,7 +33,7 @@ const ChallengesForm = () => {
               {...form.getInputProps('challengeScore')}
             />
             <Select
-              styles={{ dropdown: { maxHeight: 200, overflowY: 'auto' } }}
+              // styles={{ dropdown: { maxHeight: 200, overflowY: 'auto' } }}
               radius={'6px'}
               w={'100%'}
               label="Privacy"
