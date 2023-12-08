@@ -71,6 +71,9 @@ importers:
       classnames:
         specifier: ^2.3.2
         version: 2.3.2
+      mantine-form-zod-resolver:
+        specifier: ^1.0.0
+        version: 1.0.0(@mantine/form@7.3.1)(zod@3.22.4)
       next:
         specifier: ^14.0.2
         version: 14.0.2(@babel/core@7.23.3)(react-dom@18.2.0)(react@18.2.0)(sass@1.69.5)
@@ -83,6 +86,9 @@ importers:
       sass:
         specifier: ^1.69.5
         version: 1.69.5
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
     devDependencies:
       '@next/eslint-plugin-next':
         specifier: ^14.0.2
@@ -159,6 +165,9 @@ importers:
       '@nestjs/typeorm':
         specifier: ^10.0.1
         version: 10.0.1(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(reflect-metadata@0.1.13)(rxjs@7.8.1)(typeorm@0.3.17)
+      mantine-form-zod-resolver:
+        specifier: ^1.0.0
+        version: 1.0.0(@mantine/form@7.3.1)(zod@3.22.4)
       mysql2:
         specifier: ^3.6.3
         version: 3.6.3
@@ -6695,6 +6704,17 @@ packages:
       tmpl: 1.0.5
     dev: true
 
+  /mantine-form-zod-resolver@1.0.0(@mantine/form@7.3.1)(zod@3.22.4):
+    resolution: {integrity: sha512-7P7UL/4XHpjRbKVb0M6YqtJ88XhR/ANrze3zoAWxIZPqqIOEnTNAW963ezn6szEmwD3i/r/SUD/e8LPdEv7zqA==}
+    engines: {node: '>=16.6.0'}
+    peerDependencies:
+      '@mantine/form': '>=7.0.0'
+      zod: '>=3.0.0'
+    dependencies:
+      '@mantine/form': 7.3.1(react@18.2.0)
+      zod: 3.22.4
+    dev: false
+
   /media-typer@0.3.0:
     resolution: {integrity: sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==}
     engines: {node: '>= 0.6'}
@@ -9620,3 +9640,7 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  /zod@3.22.4:
+    resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
+    dev: false
