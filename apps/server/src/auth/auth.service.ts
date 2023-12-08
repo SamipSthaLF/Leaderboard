@@ -11,10 +11,11 @@ import { ErrorMessage } from '@common/errors/error.message';
 import { RestException } from '@common/exceptions/rest.exception';
 import { ErrorDescription } from '@common/errors/constants/description.error';
 
+import { UserDto } from '@/user/dto/user.dto';
+
 import { User } from '@/user/entities/user.entity';
 
 import { generateAccessToken } from '@/auth/util/jwt.util';
-import { UserDto } from '@/user/dto/user.dto';
 
 @Injectable()
 export class AuthService {
@@ -67,8 +68,9 @@ export class AuthService {
    * @throws {RestException} - Throws a `RestException` if no associated user is found or an error occurs during the process.
    */
   createOrUpdateUser = async (
-    userDto: UserDto,
+    request: Request,
   ): Promise<{ user: User; message: string; accessToken: string }> => {
+    const userDto = request.user;
     if (!userDto?.email) {
       throw RestException.throwNoAssociatedUserException();
     }

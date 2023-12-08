@@ -28,9 +28,6 @@ export class AuthController {
   @Get('google/callback')
   @UseGuards(AuthenticationGuard)
   async callbacktest(@Request() req: HttpRequest) {
-    if (req.user) {
-      //typing has user as optional so need to add this case check.
-      return await this.authService.createOrUpdateUser(req.user);
-    }
+    return await this.authService.createOrUpdateUser(req);
   }
 }
