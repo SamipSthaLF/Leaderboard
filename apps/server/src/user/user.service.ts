@@ -39,7 +39,8 @@ export class UserService {
   create(createUserDto: CreateUserDto) {
     const user = this.userRepository.create({
       username: createUserDto.username,
-    }); //todo add default role //todo add default role
+      roles: [RoleEnum.USER],
+    });
     return this.userRepository.save(user);
   }
 

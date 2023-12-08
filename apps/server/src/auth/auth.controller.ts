@@ -21,8 +21,8 @@ export class AuthController {
 
   @Get('redirect')
   @UseGuards(AuthenticationGuard)
-  async authenticationRedirect(@Request() req: HttpRequest) {
-    return await this.authService.requestAuthentication(req);
+  authenticationRedirect(@Request() req: HttpRequest) {
+    return this.authService.requestAuthentication(req);
   }
 
   @Get('google/callback')

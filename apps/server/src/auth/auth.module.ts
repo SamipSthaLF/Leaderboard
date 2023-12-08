@@ -10,6 +10,7 @@ import { AuthController } from '@/auth/auth.controller';
 import { GoogleStrategy } from '@/auth/strategy/google-strategy';
 
 import { User } from '@/user/entities/user.entity';
+import { UserService } from '@/user/user.service';
 
 @Module({
   imports: [
@@ -23,6 +24,6 @@ import { User } from '@/user/entities/user.entity';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, GoogleStrategy],
+  providers: [AuthService, GoogleStrategy, UserService],
 })
 export class AuthModule {}
