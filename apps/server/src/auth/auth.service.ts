@@ -3,7 +3,6 @@ import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { HttpStatus, Injectable } from '@nestjs/common';
 
-import { RoleEnum } from '@/common/constants/role.enum';
 import { ErrorMessage } from '@common/errors/error.message';
 import { RestException } from '@common/exceptions/rest.exception';
 import { ErrorDescription } from '@common/errors/constants/description.error';
@@ -48,12 +47,9 @@ export class AuthService {
    * @throws {RestException} When `userDto` lacks a valid email or in case of database operation failures.
    */
   private async createUser(userDto: UserDto): Promise<User> {
-    const newUser = this.userRepository.create({
+    return await this.userService.create({
       username: userDto.email,
-      roles: [RoleEnum.USER],
     });
-
-    return this.userRepository.save(newUser);
   }
 
   /**
@@ -76,9 +72,8 @@ export class AuthService {
     }
     // Check if the user already exists
     const user =
-      (await this.userRepository.findOne({
-        where: { username: userDto.email },
-      })) || (await this.createUser(userDto));
+      (await this.userService.findByUserName(userDto.email)) ||
+      (await this.createUser(userDto));
 
     if (!user) {
       throw RestException.throwNoAssociatedUserException();
