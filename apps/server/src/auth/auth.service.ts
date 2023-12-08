@@ -1,25 +1,23 @@
 import { Request } from 'express';
 
-import { Repository } from 'typeorm';
-
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
 import { HttpStatus, Injectable } from '@nestjs/common';
 
-import { RoleEnum } from '@/common/constants/role.enum';
 import { ErrorMessage } from '@common/errors/error.message';
 import { RestException } from '@common/exceptions/rest.exception';
 import { ErrorDescription } from '@common/errors/constants/description.error';
 
+import { UserDto } from '@/user/dto/user.dto';
+
 import { User } from '@/user/entities/user.entity';
 
 import { generateAccessToken } from '@/auth/util/jwt.util';
-import { UserDto } from '@/user/dto/user.dto';
+import { UserService } from '@/user/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    private userService: UserService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -34,6 +32,7 @@ export class AuthService {
     if (req.headers['x-api-key'] === process.env.STATIC_API_TOKEN) {
       return 'Authentication bypass from vyaguta'; // todo feature if called from vyaguta with authentication bypass
     }
+
     // Check if an authorized user exists in the request
     if (!req.user) {
       throw new RestException(
@@ -54,16 +53,14 @@ export class AuthService {
    * @throws {RestException} When `userDto` lacks a valid email or in case of database operation failures.
    */
   private async createUser(userDto: UserDto): Promise<User> {
-    const newUser = this.userRepository.create({
+    return await this.userService.create({
       username: userDto.email,
-      roles: [RoleEnum.USER],
     });
-
-    return this.userRepository.save(newUser);
   }
 
   /**
    * Service method to create or update a user based on the provided information.
+   *
    *
    * @async
    * @function
@@ -73,16 +70,16 @@ export class AuthService {
    * @throws {RestException} - Throws a `RestException` if no associated user is found or an error occurs during the process.
    */
   createOrUpdateUser = async (
-    userDto: UserDto,
+    request: Request,
   ): Promise<{ user: User; message: string; accessToken: string }> => {
+    const userDto = request.user;
     if (!userDto?.email) {
       throw RestException.throwNoAssociatedUserException();
     }
     // Check if the user already exists
     const user =
-      (await this.userRepository.findOne({
-        where: { username: userDto.email },
-      })) || (await this.createUser(userDto));
+      (await this.userService.findByUserName(userDto.email)) ||
+      (await this.createUser(userDto));
 
     if (!user) {
       throw RestException.throwNoAssociatedUserException();

@@ -28,7 +28,7 @@ import { ChallengesModule } from './challenges/challenges.module';
     ChallengesModule,
   ],
   controllers: [AppController],
-  providers: [AppService, JwtStrategy],
+  providers: [AppService, JwtStrategy, JwtStrategy],
 })
 export class AppModule {
   constructor(private dataSource: DataSource) {}

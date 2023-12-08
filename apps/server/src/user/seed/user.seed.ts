@@ -38,6 +38,8 @@ export class UserSeed {
       );
       user.roles = [RoleEnum.ADMIN, RoleEnum.USER];
       this.userService.saveUser(user);
+      user.roles = [RoleEnum.ADMIN, RoleEnum.USER];
+      this.userService.saveUser(user);
       // Add more users as needed
     }
   }
