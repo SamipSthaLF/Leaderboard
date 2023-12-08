@@ -6,6 +6,7 @@ import {
   BaseEntity,
   CreateDateColumn,
   PrimaryGeneratedColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -16,7 +17,7 @@ export class User extends BaseEntity {
   @Column()
   username: string;
 
-  @CreateDateCreateDateColumn()
+  @CreateDateColumn()
   createdOn: string;
 
   @Column({
@@ -26,4 +27,7 @@ export class User extends BaseEntity {
     default: [RoleEnum.USER],
   })
   roles: RoleEnum[];
+
+  @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp', nullable: true })
+  deletedAt: Date;
 }

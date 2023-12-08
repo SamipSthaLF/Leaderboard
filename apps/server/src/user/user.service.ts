@@ -14,8 +14,6 @@ import { ErrorDescription } from '@common/errors/constants/description.error';
 
 import { RoleEnum } from '@/common/constants/role.enum';
 
-import { RoleEnum } from '@/common/constants/role.enum';
-
 /**
  * Service responsible for handling CRUD operations related to users.
  * @class
@@ -57,14 +55,16 @@ export class UserService {
    * @param {number} id - The ID of the user to retrieve.
    * @returns {Promise<User>} - The user entity.
    */
-  findOne(id: number) {
-    return this.userRepository.findOne({ where: { id: id } });
+  async findOne(id: number) {
+    const user = await this.userRepository.findOne({ where: { id: id } });
+    if (!user) {
+      throw RestException.throwNoAssociatedUserException();
+    }
+    return user;
   }
 
   /**
    * Updates a user based on the provided ID and DTO.
-   *
-   * @async
    *
    * @async
    * @param {number} id - The ID of the user to update.
@@ -79,21 +79,24 @@ export class UserService {
     if (!existingUser) {
       throw RestException.throwNoAssociatedUserException();
     }
-    const updatedRoles: RoleEnum[] = updateUserDto.roles.map(
-      (roleString: string) => {
-        // Assuming RoleEnum has a method to convert string to enum
-        return RoleEnum[roleString as keyof typeof RoleEnum];
-      },
-    );
-    //todo fix logic of multiple addition of roles for the user. //replace duplicate
+    const updatedRoles: RoleEnum[] = updateUserDto.roles
+      .map((roleString: string) => {
+        const roleEnumValue =
+          RoleEnum[roleString.toUpperCase() as keyof typeof RoleEnum];
+        return roleEnumValue;
+      })
+      .filter((roleEnumValue) => roleEnumValue !== undefined) as RoleEnum[]; //filter out undefined and null values
 
-    existingUser.roles = [...existingUser.roles, ...updatedRoles];
+    // Remove duplicates from updatedRoles
+    const uniqueUpdatedRoles = Array.from(new Set(updatedRoles));
+
+    existingUser.roles = uniqueUpdatedRoles;
+
     return await this.userRepository.save(existingUser);
   }
 
   /**
    * Removes a user based on the provided ID.
-   * @async
    * @async
    * @async
    * @param {number} id - The ID of the user to remove.
@@ -105,13 +108,7 @@ export class UserService {
       where: { id: id },
     });
     if (!existingUser) {
-      throw new RestException(
-        new ErrorMessage(
-          HttpStatus.NOT_ACCEPTABLE,
-          HttpStatus.NOT_ACCEPTABLE.toLocaleString(),
-          ErrorDescription.USER_ALREADY_INVITED,
-        ),
-      );
+      throw RestException.throwNoAssociatedUserException();
     }
     await this.userRepository.softDelete(id);
     return {

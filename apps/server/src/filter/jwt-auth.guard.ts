@@ -12,6 +12,12 @@ import { ROLES_KEY } from '@decorator/roles.decorator';
 import { SKIP_AUTH_KEY } from '@/decorator/skip-auth.decorator';
 
 import { RoleEnum } from '@/common/constants/role.enum';
+import { User } from '@/user/entities/user.entity';
+
+import { ROLES_KEY } from '@decorator/roles.decorator';
+import { SKIP_AUTH_KEY } from '@/decorator/skip-auth.decorator';
+
+import { RoleEnum } from '@/common/constants/role.enum';
 import { ErrorMessage } from '@common/errors/error.message';
 import { RestException } from '@common/exceptions/rest.exception';
 import { ErrorDescription } from '@common/errors/constants/description.error';

@@ -21,6 +21,12 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
+  /**
+   * Perform request authentication.
+   *
+   * @param {Request} req - Express request object.
+   * @returns {Promise<string | { message: string, user: User }>} Authentication result.
+   */
   requestAuthentication = async (req: Request) => {
     // Check if the request has a valid API key for authentication bypass
     if (req.headers['x-api-key'] === process.env.STATIC_API_TOKEN) {
@@ -75,26 +81,7 @@ export class AuthService {
       (await this.createUser(userDto));
 
     if (!user) {
-      // Create a new user if not found
-      user = this.userRepository.create({
-        username: userDto.email,
-        roles: [RoleEnum.User],
-      });
-
-      // Assign default role
-    }
-
-    // Save the user in the database
-    const savedUser = await this.userRepository.save(user);
-
-    if (!savedUser) {
-      throw new RestException(
-        new ErrorMessage(
-          HttpStatus.NOT_ACCEPTABLE,
-          HttpStatus.NOT_ACCEPTABLE.toLocaleString(),
-          ErrorDescription.NO_ASSOCIATED_USER_FOUND,
-        ),
-      );
+      throw RestException.throwNoAssociatedUserException();
     }
 
     // Return user information, success message, and an access token
