@@ -5,8 +5,6 @@ import { CreateUserDto } from '@/user/dto/create-user.dto';
 
 import { RoleEnum } from '@/common/constants/role.enum';
 
-import { RoleEnum } from '@/common/constants/role.enum';
-
 /**
  * Service for seeding initial users in the database.
  *
