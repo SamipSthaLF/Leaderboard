@@ -4,8 +4,6 @@ import { Injectable, ExecutionContext } from '@nestjs/common';
 
 const accessType = 'offline' as const; // define accesstype of string literal
 
-const accessType = 'offline' as const; // define accesstype of string literal
-
 @Injectable()
 export class AuthenticationGuard extends AuthGuard('google') {
   /**
