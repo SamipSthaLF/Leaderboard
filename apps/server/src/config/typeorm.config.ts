@@ -24,7 +24,6 @@ const getDBConfig = (configService: ConfigService): TypeOrmModuleOptions => ({
     configService.get<boolean>('ENABLE_DATABASE_SYNCHRONIZE') || false,
   logger: 'advanced-console', // Enable query logging
   logging: 'all',
-  dropSchema: true,
 });
 
 export default getDBConfig;
