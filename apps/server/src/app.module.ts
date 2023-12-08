@@ -1,20 +1,19 @@
 import { DataSource } from 'typeorm';
 
 import { Module } from '@nestjs/common';
-
-import { AppService } from './app.service';
-
 import { TypeOrmModule } from '@nestjs/typeorm';
-
-import { AuthModule } from './auth/auth.module';
-
-import { UserModule } from './user/user.module';
-
-import { AppController } from './app.controller';
-
-import getDBConfig from './config/typeorm.config';
-
 import { ConfigModule, ConfigService } from '@nestjs/config';
+
+import { AppService } from '@/app.service';
+
+import { AuthModule } from '@/auth/auth.module';
+import { UserModule } from '@/user/user.module';
+
+import { AppController } from '@/app.controller';
+
+import getDBConfig from '@/config/typeorm.config';
+
+import { JwtStrategy } from '@filter/jwt.strategy';
 
 @Module({
   imports: [
@@ -27,7 +26,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, JwtStrategy, JwtStrategy],
 })
 export class AppModule {
   constructor(private dataSource: DataSource) {}
