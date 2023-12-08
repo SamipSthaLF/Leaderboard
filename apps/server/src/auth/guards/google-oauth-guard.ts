@@ -33,6 +33,7 @@ export class AuthenticationGuard extends AuthGuard('google') {
       // If x-api-key is present, bypass authentication
       return true;
     }
+
     // If x-api-key is not present, proceed with the default authentication logic
     const result = await super.canActivate(context);
     return result as boolean;
