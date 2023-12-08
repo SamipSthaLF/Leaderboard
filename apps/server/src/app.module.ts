@@ -6,17 +6,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { AppService } from '@/app.service';
 
+import { AuthModule } from '@/auth/auth.module';
+import { UserModule } from '@/user/user.module';
+
 import { AppController } from '@/app.controller';
 
 import getDBConfig from '@/config/typeorm.config';
 
 import { JwtStrategy } from '@filter/jwt.strategy';
-
-import { AuthModule } from '@/auth/auth.module';
-import { UserModule } from '@/user/user.module';
-import { RolesModule } from '@/roles/roles.module';
-import { UserrolesModule } from '@/userroles/userroles.module';
-import { ChallengesModule } from '@/challenges/challenges.module';
+import { ChallengesModule } from './challenges/challenges.module';
 
 @Module({
   imports: [
@@ -27,8 +25,6 @@ import { ChallengesModule } from '@/challenges/challenges.module';
     }),
     AuthModule,
     UserModule,
-    RolesModule,
-    UserrolesModule,
     ChallengesModule,
   ],
   controllers: [AppController],

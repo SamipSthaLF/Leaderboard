@@ -6,11 +6,15 @@ import {
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 
+import { User } from '@/user/entities/user.entity';
+
+import { ROLES_KEY } from '@decorator/roles.decorator';
+
 import { ErrorMessage } from '@common/errors/error.message';
 import { RestException } from '@common/exceptions/rest.exception';
 import { ErrorDescription } from '@common/errors/constants/description.error';
+import { SKIP_AUTH_KEY } from '@/decorator/skip-auth.decorator';
 
-import { ROLES_KEY } from '@decorator/roles.decorator';
 /**
  * Custom JWT authentication guard that extends the `AuthGuard` from `@nestjs/passport`.
  * This guard also checks for roles specified using the `Roles` decorator.
@@ -34,7 +38,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
    */
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isAuthSkipped = this.reflector.getAllAndOverride<boolean>(
-      'skipAuth',
+      SKIP_AUTH_KEY,
       [context.getHandler(), context.getClass()],
     );
 
@@ -79,18 +83,22 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     } else if (methodRoles !== undefined) {
       roles = methodRoles;
     }
-    console.log(roles, 'roles');
-    if (!roles || roles.length < 1) {
+    console.log(roles);
+
+    if (!roles.length) {
       return true; // No roles specified, allow access
     }
 
-    const request = await context.switchToHttp().getRequest();
+    const request = context.switchToHttp().getRequest();
     const user = request.user;
 
+    console.log(user);
     if (
       !user ||
-      !user.roles ||
-      !roles.some((role) => user.roles.includes(role))
+      !user.roles.length ||
+      !roles.some((role) =>
+        user.roles.some((userRole: string) => userRole === role),
+      )
     ) {
       throw new UnauthorizedException('User does not have the required roles');
     }
@@ -100,23 +108,27 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
   /**
    * Handles the result of the authentication.
-   * @param {any} err - The error object, if any.
-   * @param {any} user - The user object, if authentication is successful.
-   * @param {any} info - Additional information about the authentication process.
-   * @returns {any} - The user object if authentication is successful.
+   * @param {Error} err - The error object.
+   * @param {User} user - The user object, if authentication is successful.
+   * @param {string} info - Additional information about the authentication process.
+   * @returns {User} - The user object if authentication is successful.
    * @throws {RestException} - Throws a `RestException` if authentication fails.
    */
-  handleRequest(err: any, user: any, info: any): any {
+  handleRequest<TUser = User>(
+    err: Error | null,
+    user: User | null,
+    info: string,
+  ): TUser {
     if (err || !user) {
       const unauthorizedException = new UnauthorizedException();
       const errorMessage = new ErrorMessage(
         unauthorizedException.getStatus(),
-        unauthorizedException.message,
+        unauthorizedException.message.concat(':').concat(info), //will remove concat block after discussion regarding if we need info at all
         ErrorDescription.UNAUTHORIZED_USER,
       );
       throw new RestException(errorMessage);
     }
 
-    return user;
+    return user as unknown as TUser; //unsure how  not to use the return type as any here.
   }
 }

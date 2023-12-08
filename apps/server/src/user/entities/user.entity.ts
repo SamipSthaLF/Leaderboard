@@ -1,11 +1,10 @@
-import { Role } from '@/roles/entities/role.entity';
+import { RoleEnum } from '@/common/constants/role.enum';
 
 import {
-  BaseEntity,
   Column,
   Entity,
-  JoinTable,
-  ManyToMany,
+  BaseEntity,
+  CreateDateColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -17,13 +16,14 @@ export class User extends BaseEntity {
   @Column()
   username: string;
 
-  @Column()
+  @CreateDateColumn()
   createdOn: string;
 
-  @Column()
-  lastLoginTime: string;
-
-  @ManyToMany(() => Role, (role) => role.users, { cascade: true })
-  @JoinTable()
-  roles: Role[];
+  @Column({
+    type: 'enum',
+    enum: RoleEnum,
+    array: true,
+    default: [RoleEnum.USER],
+  })
+  roles: RoleEnum[];
 }

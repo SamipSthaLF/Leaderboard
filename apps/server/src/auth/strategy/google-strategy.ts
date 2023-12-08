@@ -4,7 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 
 import { Strategy, VerifyCallback } from 'passport-google-oauth2';
 
-import getGoogleStrategyConfig from 'src/config/googlestrategy.config';
+import getGoogleStrategyConfig from '@config/googlestrategy.config';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
@@ -16,12 +16,13 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(configService: ConfigService) {
     super(getGoogleStrategyConfig(configService));
   }
+
   /**
    * Validate and transform user profile data received from Google OAuth 2.0.
    *
    * @param {string} accessToken - Google OAuth 2.0 access token.
    * @param {string} refreshToken - Google OAuth 2.0 refresh token.
-   * @param {any} profile - User profile data received from Google.
+   * @param {GoogleProfile} profile - User profile data received from Google.
    * @param {VerifyCallback} done - Passport callback for completing the authentication process.
    * @returns {Promise<void>} A Promise resolving to the transformed user object.
    */

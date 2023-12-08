@@ -1,21 +1,22 @@
 import {
-  Controller,
   Get,
   Post,
   Body,
   Patch,
   Param,
   Delete,
-  HttpStatus,
   HttpCode,
+  Controller,
+  HttpStatus,
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
 import { UserService } from '@/user/user.service';
-import { CreateUserDto } from '@/user/dto/create-user.dto';
-import { UpdateUserDto } from '@/user/dto/update-user.dto';
 
 import { Roles } from '@/decorator/roles.decorator';
+
+import { CreateUserDto } from '@/user/dto/create-user.dto';
+import { UpdateUserDto } from '@/user/dto/update-user.dto';
 
 @Controller('user')
 @Roles('Admin')
@@ -30,7 +31,6 @@ export class UserController {
   }
 
   @Get()
-  @Roles('Reviewer', 'User')
   @HttpCode(HttpStatus.OK)
   async findAll() {
     return await this.userService.findAll();

@@ -36,7 +36,7 @@ export class ChallengesController {
   constructor(private readonly challengesService: ChallengesService) {}
 
   @Post()
-  @Roles(RoleEnum.Admin)
+  @Roles(RoleEnum.ADMIN)
   @ApiCreatedResponse({
     description: 'Created a new challenge',
     type: Challenge,
@@ -48,7 +48,7 @@ export class ChallengesController {
   }
 
   @Get()
-  @Roles(RoleEnum.Admin, RoleEnum.Reviewer, RoleEnum.User)
+  @Roles(RoleEnum.ADMIN, RoleEnum.REVIEWER, RoleEnum.USER)
   @ApiCreatedResponse({
     description: 'Fetched all challenges',
     type: Challenge,
@@ -60,7 +60,7 @@ export class ChallengesController {
   }
 
   @Get(':id')
-  @Roles(RoleEnum.Admin, RoleEnum.Reviewer, RoleEnum.User)
+  @Roles(RoleEnum.ADMIN, RoleEnum.REVIEWER, RoleEnum.USER)
   @ApiCreatedResponse({
     description: 'Fetched challenge',
     type: Challenge,
@@ -73,7 +73,7 @@ export class ChallengesController {
   }
 
   @Patch(':id')
-  @Roles(RoleEnum.Admin)
+  @Roles(RoleEnum.ADMIN)
   @ApiCreatedResponse({
     description: 'Updated challenge',
     type: Challenge,
@@ -88,7 +88,7 @@ export class ChallengesController {
   }
 
   @Delete(':id')
-  @Roles(RoleEnum.Admin)
+  @Roles(RoleEnum.ADMIN)
   @ApiCreatedResponse({
     description: 'Deleted challenge',
     type: Challenge,

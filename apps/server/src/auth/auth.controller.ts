@@ -1,4 +1,4 @@
-import { Controller, Get, Request, UseGuards } from '@nestjs/common';
+import { Get, Request, Controller, UseGuards } from '@nestjs/common';
 
 import { Request as HttpRequest } from 'express';
 
@@ -26,6 +26,9 @@ export class AuthController {
   @Get('google/callback')
   @UseGuards(AuthenticationGuard)
   async callbacktest(@Request() req: HttpRequest) {
-    return await this.authService.createOrUpdateUser(req.user);
+    if (req.user) {
+      //typing has user as optional so need to add this case check.
+      return await this.authService.createOrUpdateUser(req.user);
+    }
   }
 }

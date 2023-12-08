@@ -1,3 +1,11 @@
+import { SetMetadata } from '@nestjs/common';
+
+/**
+ * The key used to store skip-auth metadata.
+ * @constant {string}
+ */
+export const SKIP_AUTH_KEY = 'skipAuth';
+
 /**
  * A decorator function to mark a route or method to skip authentication.
  * @function
@@ -14,6 +22,4 @@
  *   }
  * }
  */
-import { SetMetadata } from '@nestjs/common';
-
-export const SkipAuth = () => SetMetadata('skipAuth', true);
+export const SkipAuth = () => SetMetadata(SKIP_AUTH_KEY, true);

@@ -12,6 +12,8 @@ import { ErrorMessage } from '@common/errors/error.message';
 import { RestException } from '@common/exceptions/rest.exception';
 import { ErrorDescription } from '@common/errors/constants/description.error';
 
+import { RoleEnum } from '@/common/constants/role.enum';
+
 /**
  * Service responsible for handling CRUD operations related to users.
  * @class
@@ -30,10 +32,13 @@ export class UserService {
   /**
    * Creates a new user based on the provided DTO.
    * @param {CreateUserDto} createUserDto - The DTO containing user creation information.
-   * @returns {string} - A message indicating the success of the operation.
+   * @returns {Promise<User>} - A message indicating the success of the operation.
    */
-  create(createUserDto: CreateUserDto): string {
-    return 'This action adds a new user';
+  create(createUserDto: CreateUserDto) {
+    const user = this.userRepository.create({
+      username: createUserDto.username,
+    }); //todo add default role
+    return this.userRepository.save(user);
   }
 
   /**
@@ -41,7 +46,7 @@ export class UserService {
    * @returns {Promise<User[]>} - An array of users with associated roles.
    */
   findAll(): Promise<User[]> {
-    return this.userRepository.find({ relations: ['roles'] });
+    return this.userRepository.find();
   }
 
   /**
@@ -55,16 +60,35 @@ export class UserService {
 
   /**
    * Updates a user based on the provided ID and DTO.
+   *
+   * @async
    * @param {number} id - The ID of the user to update.
    * @param {UpdateUserDto} updateUserDto - The DTO containing user update information.
-   * @returns {string} - A message indicating the success of the operation.
+   * @param {Request} request - The request from express.
+   * @returns {Promise<user>} -Promise<User>
    */
-  update(id: number, updateUserDto: UpdateUserDto): string {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const existingUser = await this.userRepository.findOne({
+      where: { id: id },
+    });
+    if (!existingUser) {
+      throw RestException.throwNoAssociatedUserException();
+    }
+    const updatedRoles: RoleEnum[] = updateUserDto.roles.map(
+      (roleString: string) => {
+        // Assuming RoleEnum has a method to convert string to enum
+        return RoleEnum[roleString as keyof typeof RoleEnum];
+      },
+    );
+    //todo fix logic of multiple addition of roles for the user. //replace duplicate
+
+    existingUser.roles = [...existingUser.roles, ...updatedRoles];
+    return await this.userRepository.save(existingUser);
   }
 
   /**
    * Removes a user based on the provided ID.
+   * @async
    * @async
    * @param {number} id - The ID of the user to remove.
    * @returns {Promise<{ message: string }>} - An object containing a message indicating the success of the operation.

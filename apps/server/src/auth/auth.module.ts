@@ -9,14 +9,11 @@ import { AuthService } from '@/auth/auth.service';
 import { AuthController } from '@/auth/auth.controller';
 import { GoogleStrategy } from '@/auth/strategy/google-strategy';
 
-import { Role } from '@/roles/entities/role.entity';
-import { RolesService } from '@/roles/roles.service';
-
 import { User } from '@/user/entities/user.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Role]),
+    TypeOrmModule.forFeature([User]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -26,6 +23,6 @@ import { User } from '@/user/entities/user.entity';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, GoogleStrategy, RolesService],
+  providers: [AuthService, GoogleStrategy],
 })
 export class AuthModule {}
