@@ -36,7 +36,7 @@ export class UserSeed {
       const user = await this.userService.create(
         new CreateUserDto('asminshrestha@lftechnology.com'),
       );
-      user.roles = [RoleEnum.Admin];
+      user.roles = [RoleEnum.ADMIN, RoleEnum.USER];
       this.userService.saveUser(user);
       // Add more users as needed
     }

@@ -47,7 +47,24 @@ export class AuthService {
   };
 
   /**
+   * Creates or updates a user based on the provided User DTO.
+   *
+   * @param {UserDto} userDto - User data transfer object containing the user's email and other information.
+   * @returns {Promise<{ user: User; message: string; accessToken: string }>} Object with user details, message, and access token.
+   * @throws {RestException} When `userDto` lacks a valid email or in case of database operation failures.
+   */
+  private async createUser(userDto: UserDto): Promise<User> {
+    const newUser = this.userRepository.create({
+      username: userDto.email,
+      roles: [RoleEnum.USER],
+    });
+
+    return this.userRepository.save(newUser);
+  }
+
+  /**
    * Service method to create or update a user based on the provided information.
+   *
    * @async
    * @function
    * @name createOrUpdateUser
@@ -58,48 +75,24 @@ export class AuthService {
   createOrUpdateUser = async (
     userDto: UserDto,
   ): Promise<{ user: User; message: string; accessToken: string }> => {
-    if (!userDto || !userDto.email) {
-      throw new RestException(
-        new ErrorMessage(
-          HttpStatus.NOT_ACCEPTABLE,
-          HttpStatus.NOT_ACCEPTABLE.toLocaleString(),
-          ErrorDescription.NO_ASSOCIATED_USER_FOUND,
-        ),
-      );
+    if (!userDto?.email) {
+      throw RestException.throwNoAssociatedUserException();
     }
     // Check if the user already exists
-    let user: User | null = await this.userRepository.findOne({
-      where: { username: userDto.email },
-    });
+    const user =
+      (await this.userRepository.findOne({
+        where: { username: userDto.email },
+      })) || (await this.createUser(userDto));
 
     if (!user) {
-      // Create a new user if not found
-      user = this.userRepository.create({
-        username: userDto.email,
-        roles: [RoleEnum.User],
-      });
-
-      // Assign default role
-    }
-
-    // Save the user in the database
-    const savedUser = await this.userRepository.save(user);
-
-    if (!savedUser) {
-      throw new RestException(
-        new ErrorMessage(
-          HttpStatus.NOT_ACCEPTABLE,
-          HttpStatus.NOT_ACCEPTABLE.toLocaleString(),
-          ErrorDescription.NO_ASSOCIATED_USER_FOUND,
-        ),
-      );
+      throw RestException.throwNoAssociatedUserException();
     }
 
     // Return user information, success message, and an access token
     return {
-      user: savedUser,
+      user: user,
       message: 'Successful Login from Google Oauth',
-      accessToken: generateAccessToken(this.jwtService, savedUser), // Make sure JwtService is appropriately imported and available
+      accessToken: generateAccessToken(this.jwtService, user), // Make sure JwtService is appropriately imported and available
     };
   };
 }

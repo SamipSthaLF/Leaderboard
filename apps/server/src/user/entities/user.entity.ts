@@ -1,11 +1,12 @@
 import { RoleEnum } from '@/common/constants/role.enum';
+
 import {
   Column,
   Entity,
   BaseEntity,
-  PrimaryGeneratedColumn,
   CreateDateColumn,
-  JoinTable,
+  PrimaryGeneratedColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -19,10 +20,14 @@ export class User extends BaseEntity {
   @CreateDateColumn()
   createdOn: string;
 
-  @Column('enum', { enum: RoleEnum, array: true, default: [RoleEnum.User] })
-  @JoinTable({
-    name: 'users_roles',
-    joinColumn: { name: 'user_id', referencedColumnName: 'id' },
+  @Column({
+    type: 'enum',
+    enum: RoleEnum,
+    array: true,
+    default: [RoleEnum.USER],
   })
   roles: RoleEnum[];
+
+  @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp', nullable: true })
+  deletedAt: Date;
 }
