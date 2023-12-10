@@ -21,8 +21,11 @@ const getGoogleStrategyConfig = (
     clientSecret: configService.get<string>('GOOGLE_CLIENT_SECRET') ?? '',
     callbackURL: configService.get<string>('GOOGLE_CALLBACK_URL') ?? '',
     // Define default scope for Google OAuth 2.0
-    scope: ['email', 'profile'],
+    scope: [GoogleScope.Email, GoogleScope.Profile],
   };
 };
-
+enum GoogleScope {
+  Email = 'email',
+  Profile = 'profile',
+}
 export default getGoogleStrategyConfig;

@@ -1,29 +1,33 @@
-import { AuthService } from './auth.service';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { Get, Request, Controller, UseGuards } from '@nestjs/common';
 
 import { Request as HttpRequest } from 'express';
 
-import { AuthenticationGuard } from './guards/google-oauth-guard';
+import { SkipAuth } from '@decorator/skip-auth.decorator';
 
-import { Controller, Get, Request, UseGuards } from '@nestjs/common';
+import { AuthService } from '@/auth/auth.service';
+
+import { AuthenticationGuard } from '@/auth/guards/google-oauth-guard';
 
 @Controller('auth')
+@SkipAuth()
+@ApiBearerAuth()
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get()
   @UseGuards(AuthenticationGuard)
-  async googleAuth(@Request() req: HttpRequest) {}
+  async googleAuth() {}
 
   @Get('redirect')
   @UseGuards(AuthenticationGuard)
   authenticationRedirect(@Request() req: HttpRequest) {
-    if (req.user) {
-    }
     return this.authService.requestAuthentication(req);
   }
 
   @Get('google/callback')
-  callbacktest() {
-    return 'Google Authentication success. Callback url reached';
+  @UseGuards(AuthenticationGuard)
+  async callbacktest(@Request() req: HttpRequest) {
+    return await this.authService.createOrUpdateUser(req);
   }
 }

@@ -1,5 +1,5 @@
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
+import { AuthService } from '@/auth/auth.service';
+import { AuthController } from '@/auth/auth.controller';
 
 import { Test, TestingModule } from '@nestjs/testing';
 
