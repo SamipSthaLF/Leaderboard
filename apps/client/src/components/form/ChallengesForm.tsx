@@ -36,8 +36,13 @@ const ChallengesForm = () => {
 
   const handleSubmit = async (values: Challenge) => {
     form.validate();
-    console.log('submit', values);
-    form.reset();
+    // TODO: handle submit
+    try {
+      console.log('submit', values);
+      form.reset();
+    } catch (error) {
+      // Error handling
+    }
   };
 
   return (
