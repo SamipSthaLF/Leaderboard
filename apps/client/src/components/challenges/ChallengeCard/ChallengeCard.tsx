@@ -12,22 +12,20 @@ import {
   Button,
   Divider,
   MenuItem,
+  HoverCard,
   ActionIcon,
   MenuTarget,
-  MenuDropdown
+  MenuDropdown,
+  HoverCardTarget,
+  HoverCardDropdown
 } from '@mantine/core';
-
-import type { CardLayout } from '@/types/challenges';
-
-import { getStylesByCardLayout } from '@/utils/challenges';
 import { IconDotsVertical, IconPencil, IconTrash } from '@tabler/icons-react';
 
-interface Challenge {
-  title: string;
-  score: number;
-  description: string;
-  coverImgSrc: string;
-}
+import type { CardLayout, Challenge } from '@/types/challenges';
+
+import { getStylesByCardLayout } from '@/utils/challenges';
+
+import { ChallengesHoverCard } from '@/components/challenges/ChallengesHoverCard';
 
 interface Props {
   challenge: Challenge;
@@ -39,7 +37,7 @@ export function ChallengeCard({ cardLayout, challenge }: Readonly<Props>) {
     getStylesByCardLayout(cardLayout);
 
   return (
-    <Paper component="article" p="24px" radius="md" shadow="sm" maw="850px" mx="auto" withBorder>
+    <Paper component="article" p="xl" radius="md" shadow="sm" maw="850px" mx="auto" withBorder>
       <Flex direction={containerFlexDirection} gap="lg">
         <Box component="figure" h={coverImageHeight} w="287" pos="relative" style={imageWrapperStyles}>
           <Image src={challenge.coverImgSrc} alt={challenge.title} radius="md" component={NextImage} fill />
@@ -48,9 +46,16 @@ export function ChallengeCard({ cardLayout, challenge }: Readonly<Props>) {
         <Flex direction="column" justify="space-between" style={contentWrapperStyles}>
           <Stack gap="lg">
             <Group justify="space-between" align="center">
-              <Title order={2} c="cascade-blue.9" fz={titleFontSize}>
-                {challenge.title}
-              </Title>
+              <HoverCard position="right-start">
+                <HoverCardTarget>
+                  <Title order={2} c="cascade-blue.9" fz={titleFontSize} style={{ cursor: 'default' }}>
+                    {challenge.title}
+                  </Title>
+                </HoverCardTarget>
+                <HoverCardDropdown>
+                  <ChallengesHoverCard challenge={challenge} />
+                </HoverCardDropdown>
+              </HoverCard>
               <Menu position="left-start" offset={0} radius="md" shadow="sm">
                 <MenuTarget>
                   <ActionIcon p="0" size="md" variant="transparent" aria-label="Menu" color="gray.5">

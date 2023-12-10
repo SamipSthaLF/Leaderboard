@@ -8,6 +8,7 @@ import { Container } from '@/components/common/Container';
 import { ChallengeCard } from '@/components/challenges/ChallengeCard';
 import { LayoutToggleSwitch } from '@/components/challenges/LayoutToggleSwitch';
 
+// TO BE REMOVED
 const CHALLENGE = {
   title: 'Take an interview',
   description:
@@ -16,6 +17,7 @@ const CHALLENGE = {
   score: 10
 };
 
+// TO BE REMOVED
 const CHALLENGES = [CHALLENGE, CHALLENGE, CHALLENGE, CHALLENGE, CHALLENGE] as const;
 
 export default function Challenges({ searchParams }: Readonly<{ searchParams: SearchParams }>) {
@@ -23,10 +25,10 @@ export default function Challenges({ searchParams }: Readonly<{ searchParams: Se
   const gridSpan = layout === 'grid' ? 4 : 12;
 
   return (
-    <Box component="section" p="24">
+    <Box component="section" p="xl">
       <Flex mb="28" justify="space-between">
         <Title>Challenges</Title>
-        <Flex gap="24">
+        <Flex gap="xl">
           <LayoutToggleSwitch />
           <Button leftSection={<IconPlus size={14} />}>Challenge</Button>
         </Flex>
@@ -34,7 +36,7 @@ export default function Challenges({ searchParams }: Readonly<{ searchParams: Se
       <Divider />
 
       <Container>
-        <Grid gutter="24" mt="24">
+        <Grid gutter="xl" mt="xl">
           {CHALLENGES.map((challenge) => (
             <GridCol key={challenge.title} span={gridSpan}>
               <ChallengeCard challenge={challenge} cardLayout={layout} />
