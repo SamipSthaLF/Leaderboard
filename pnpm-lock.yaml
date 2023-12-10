@@ -165,9 +165,6 @@ importers:
       '@nestjs/typeorm':
         specifier: ^10.0.1
         version: 10.0.1(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(reflect-metadata@0.1.13)(rxjs@7.8.1)(typeorm@0.3.17)
-      mantine-form-zod-resolver:
-        specifier: ^1.0.0
-        version: 1.0.0(@mantine/form@7.3.1)(zod@3.22.4)
       mysql2:
         specifier: ^3.6.3
         version: 3.6.3
