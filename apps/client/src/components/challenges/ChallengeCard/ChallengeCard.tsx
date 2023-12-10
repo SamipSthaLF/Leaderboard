@@ -1,9 +1,26 @@
 import NextImage from 'next/image';
-import { Box, Button, Divider, Flex, Group, Image, Paper, Stack, Text, Title } from '@mantine/core';
+import {
+  Box,
+  Flex,
+  Menu,
+  Text,
+  Title,
+  Group,
+  Image,
+  Paper,
+  Stack,
+  Button,
+  Divider,
+  MenuItem,
+  ActionIcon,
+  MenuTarget,
+  MenuDropdown
+} from '@mantine/core';
 
 import type { CardLayout } from '@/types/challenges';
 
 import { getStylesByCardLayout } from '@/utils/challenges';
+import { IconDotsVertical, IconPencil, IconTrash } from '@tabler/icons-react';
 
 interface Challenge {
   title: string;
@@ -22,7 +39,7 @@ export function ChallengeCard({ cardLayout, challenge }: Readonly<Props>) {
     getStylesByCardLayout(cardLayout);
 
   return (
-    <Paper component="article" p="24px" radius="md" shadow="card" maw="850px" mx="auto" withBorder>
+    <Paper component="article" p="24px" radius="md" shadow="sm" maw="850px" mx="auto" withBorder>
       <Flex direction={containerFlexDirection} gap="lg">
         <Box component="figure" h={coverImageHeight} w="287" pos="relative" style={imageWrapperStyles}>
           <Image src={challenge.coverImgSrc} alt={challenge.title} radius="md" component={NextImage} fill />
@@ -30,9 +47,42 @@ export function ChallengeCard({ cardLayout, challenge }: Readonly<Props>) {
 
         <Flex direction="column" justify="space-between" style={contentWrapperStyles}>
           <Stack gap="lg">
-            <Title order={2} c="cascade-blue.9" fz={titleFontSize}>
-              {challenge.title}
-            </Title>
+            <Group justify="space-between" align="center">
+              <Title order={2} c="cascade-blue.9" fz={titleFontSize}>
+                {challenge.title}
+              </Title>
+              <Menu position="left-start" offset={0} radius="md" shadow="sm">
+                <MenuTarget>
+                  <ActionIcon p="0" size="md" variant="transparent" aria-label="Menu" color="gray.5">
+                    <IconDotsVertical size={20} stroke={1.5} />
+                  </ActionIcon>
+                </MenuTarget>
+
+                <MenuDropdown w="150" p="0" fz="sm">
+                  <MenuItem p="0">
+                    <Flex component="span" gap="sm" px="md" py="sm" align="center">
+                      <ActionIcon color="gray.7" variant="transparent">
+                        <IconPencil size={20} />
+                      </ActionIcon>
+                      <Text c="gray.7" fz="sm">
+                        Edit
+                      </Text>
+                    </Flex>
+                  </MenuItem>
+
+                  <MenuItem p="0">
+                    <Flex component="span" gap="sm" px="md" py="sm" align="center">
+                      <ActionIcon color="red.9" variant="transparent">
+                        <IconTrash size={20} />
+                      </ActionIcon>
+                      <Text c="gray.7" fz="sm">
+                        Delete
+                      </Text>
+                    </Flex>
+                  </MenuItem>
+                </MenuDropdown>
+              </Menu>
+            </Group>
             <Text c="dark.9" lh="155%" lineClamp={2} fz="14 ">
               {challenge.description}
             </Text>
