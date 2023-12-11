@@ -1,21 +1,20 @@
 import {
-  Get,
   Body,
-  Post,
-  Patch,
-  Param,
-  Delete,
-  HttpCode,
   Controller,
-  HttpStatus,
+  Delete,
+  Get,
+  Param,
   ParseIntPipe,
+  Patch,
+  Post,
 } from '@nestjs/common';
 
 import {
-  ApiBearerAuth,
-  ApiTags,
-  ApiCreatedResponse,
   ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 
 import { UserService } from '@/user/user.service';
@@ -26,6 +25,7 @@ import { User } from './entities/user.entity';
 import { CreateUserDto } from '@/user/dto/create-user.dto';
 import { UpdateUserDto } from '@/user/dto/update-user.dto';
 
+@ApiTags('User')
 @Controller('user')
 @Roles('Admin')
 @ApiBearerAuth()
@@ -37,26 +37,38 @@ export class UserController {
     description: 'Created a new user',
     type: User,
   })
+  @ApiBadRequestResponse({ description: 'User cannot be deleted' })
   @ApiBadRequestResponse({ description: 'User cannot be created' })
-  @HttpCode(HttpStatus.CREATED)
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
 
   @Get()
-  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({
+    description: 'Fetched all users',
+    type: User,
+  })
+  @ApiBadRequestResponse({ description: 'User cannot be fetched' })
   async findAll() {
     return await this.userService.findAll();
   }
 
   @Get(':id')
-  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({
+    description: 'Fetched a user',
+    type: User,
+  })
+  @ApiBadRequestResponse({ description: 'User cannot be fetched' })
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.userService.findOne(id);
   }
 
   @Patch(':id')
-  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({
+    description: 'Updated user',
+    type: User,
+  })
+  @ApiBadRequestResponse({ description: 'User cannot be updated' })
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
@@ -65,13 +77,21 @@ export class UserController {
   }
 
   @Delete(':id')
-  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({
+    description: 'Deleted a user',
+    type: User,
+  })
+  @ApiBadRequestResponse({ description: 'User cannot be deleted' })
   async remove(@Param('id', ParseIntPipe) id: number) {
     return await this.userService.remove(id);
   }
 
   @Post('invite')
-  @HttpCode(HttpStatus.CREATED)
+  @ApiCreatedResponse({
+    description: 'Invited a new user',
+    type: User,
+  })
+  @ApiBadRequestResponse({ description: 'New user cannot be invited' })
   inviteNewUser(@Body() inviteNewUserRequest: CreateUserDto) {
     return this.userService.inviteNewUser(inviteNewUserRequest);
   }
