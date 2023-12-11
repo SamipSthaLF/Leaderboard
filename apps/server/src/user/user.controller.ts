@@ -1,26 +1,26 @@
 import {
-  Body,
-  Controller,
-  Delete,
   Get,
-  Param,
-  ParseIntPipe,
-  Patch,
+  Body,
   Post,
+  Param,
+  Patch,
+  Delete,
+  Controller,
+  ParseIntPipe,
 } from '@nestjs/common';
 
 import {
-  ApiBadRequestResponse,
-  ApiBearerAuth,
-  ApiCreatedResponse,
-  ApiOkResponse,
   ApiTags,
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiCreatedResponse,
+  ApiBadRequestResponse,
 } from '@nestjs/swagger';
 
 import { UserService } from '@/user/user.service';
 
 import { Roles } from '@/decorator/roles.decorator';
-import { User } from './entities/user.entity';
+import { User } from '@/user/entities/user.entity';
 
 import { CreateUserDto } from '@/user/dto/create-user.dto';
 import { UpdateUserDto } from '@/user/dto/update-user.dto';

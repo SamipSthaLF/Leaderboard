@@ -1,17 +1,10 @@
+import { Get, Request, UseGuards, Controller } from '@nestjs/common';
+
 import {
   ApiTags,
   ApiCreatedResponse,
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
-
-import {
-  Get,
-  Request,
-  HttpCode,
-  UseGuards,
-  Controller,
-  HttpStatus,
-} from '@nestjs/common';
 
 import { Request as HttpRequest } from 'express';
 
@@ -36,7 +29,6 @@ export class AuthController {
     description: 'Redirected',
   })
   @ApiBadRequestResponse({ description: 'Redirection failed' })
-  @HttpCode(HttpStatus.OK)
   @UseGuards(AuthenticationGuard)
   authenticationRedirect(@Request() req: HttpRequest) {
     return this.authService.requestAuthentication(req);
@@ -44,7 +36,6 @@ export class AuthController {
 
   @Get('google/callback')
   @ApiBadRequestResponse({ description: 'Redirection failed' })
-  @HttpCode(HttpStatus.OK)
   @UseGuards(AuthenticationGuard)
   async callbacktest(@Request() req: HttpRequest) {
     return await this.authService.createOrUpdateUser(req);
