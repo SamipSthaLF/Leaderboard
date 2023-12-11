@@ -73,26 +73,14 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
    * @returns {string[]} - The combined roles.
    */
   getRoles(context: ExecutionContext): string[] {
-    const controllerRoles = this.reflector.getAllAndOverride<string[]>(
-      ROLES_KEY,
-      [context.getClass()],
-    );
-    //check for method roles
-    const methodRoles = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [
+    //check for roles in decorator
+    const roles = this.reflector.getAllAndMerge<string[]>(ROLES_KEY, [
+      context.getClass(),
       context.getHandler(),
     ]);
-    /**   
-     * The code block doesn't extract from method level so opted to use two reflector to fetch handler and method
-    // console.log(
-    //   this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [
-    //     context.getClass(),
-    //     context.getHandler(),
-    //   ]),
-    // );
-    */
 
-    // Combine and deduplicate roles
-    return [...new Set([...(controllerRoles || []), ...(methodRoles || [])])];
+    //deduplicate roles
+    return [...new Set([...(roles || [])])];
   }
 
   /**
