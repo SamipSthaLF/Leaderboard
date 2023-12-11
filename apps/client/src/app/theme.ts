@@ -16,7 +16,7 @@ export const theme = createTheme({
       '#203eae',
       '#143699'
     ],
-    'Cerulean-Dream': [
+    'cerulean-dream': [
       '#102B7B',
       '#102B8B',
       '#464EA5',

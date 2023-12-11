@@ -3,6 +3,7 @@
 import { z } from 'zod';
 import { useForm, zodResolver } from '@mantine/form';
 import { Button, Flex, NumberInput, Paper, Textarea, TextInput } from '@mantine/core';
+import { ChallengeFormValues } from '@/types/challenges';
 
 const schema = z.object({
   challengeScore: z.number().min(1, {
@@ -16,38 +17,46 @@ const schema = z.object({
   })
 });
 
-export interface Challenge {
-  challengeScore: number;
-  challengeTitle: string;
-  description: string;
-}
+type AddForm = {
+  mode: 'add';
+};
 
-const ChallengesForm = () => {
-  const form = useForm<Challenge>({
-    initialValues: {
-      challengeScore: NaN,
-      challengeTitle: '',
-      description: ''
-    },
+type EditForm = {
+  mode: 'edit';
+  initialValue: ChallengeFormValues;
+};
+
+type ChallengeFormProp = (AddForm | EditForm) & {
+  handleSubmit: (values: ChallengeFormValues) => void;
+};
+
+const defaultInitialValues: ChallengeFormValues = {
+  challengeScore: NaN,
+  challengeTitle: '',
+  description: ''
+};
+
+export const ChallengesForm = (props: ChallengeFormProp) => {
+  const { mode, handleSubmit } = props;
+
+  const form = useForm<ChallengeFormValues>({
+    initialValues: mode === 'edit' ? props.initialValue : defaultInitialValues,
     validate: zodResolver(schema),
     validateInputOnBlur: true,
     name: 'challenge'
   });
-
-  const handleSubmit = async (values: Challenge) => {
+  
+  const onSubmit = async (values: ChallengeFormValues) => {
     form.validate();
-    // TODO: handle submit
-    try {
-      console.log('submit', values);
-      form.reset();
-    } catch (error) {
-      // Error handling
-    }
+
+    // other checks if any
+    handleSubmit(values);
+    form.reset();
   };
 
   return (
     <Paper withBorder radius={'8px'} shadow="md" p="1.5rem">
-      <form onSubmit={form.onSubmit(handleSubmit)} onReset={form.reset}>
+      <form onSubmit={form.onSubmit(onSubmit)} onReset={form.reset}>
         <Flex direction="column" gap={'1rem'}>
           <Flex direction="row" justify="space-between" gap="1em">
             <TextInput
@@ -85,5 +94,3 @@ const ChallengesForm = () => {
     </Paper>
   );
 };
-
-export default ChallengesForm;
