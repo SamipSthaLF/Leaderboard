@@ -37,7 +37,6 @@ export class UserController {
     description: 'Created a new user',
     type: User,
   })
-  @ApiBadRequestResponse({ description: 'User cannot be deleted' })
   @ApiBadRequestResponse({ description: 'User cannot be created' })
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
