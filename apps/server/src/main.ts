@@ -1,9 +1,9 @@
 import { Reflector } from '@nestjs/core';
 
+import { seed } from '@/app.seed';
 import { createApp } from '@/app.factory';
 
 import { JwtAuthGuard } from '@filter/jwt-auth.guard';
-import { seed } from '@/app.seed';
 
 async function bootstrap() {
   const app = await createApp();
