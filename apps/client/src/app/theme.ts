@@ -29,17 +29,19 @@ export const theme = createTheme({
       '#CACEFF'
     ]
   },
-  defaultRadius: 'xl',
+  defaultRadius: 'sm',
   shadows: {
     md: '1px 1px 3px rgba(0, 0, 0, .25)',
-    xl: '5px 5px 3px rgba(0, 0, 0, .25)'
+    xl: '5px 5px 3px rgba(0, 0, 0, .25)',
+    sm: '0px 7px 7px -5px rgba(0, 0, 0, 0.04), 0px 10px 15px -5px rgba(0, 0, 0, 0.05), 0px 1px 3px 0px rgba(0, 0, 0, 0.05)'
   },
   spacing: {
     xs: '4px',
     sm: '8px',
     md: '12px',
     lg: '16px',
-    xl: '32px'
+    xl: '24px',
+    '2xl': '32px'
   },
   fontSizes: {
     xs: '12px',
@@ -51,7 +53,8 @@ export const theme = createTheme({
   headings: {
     fontFamily: 'SF Pro Display, sans-serif',
     sizes: {
-      h1: { fontSize: rem(22), fontWeight: '700', lineHeight: '140%' }
+      h1: { fontSize: rem(22), fontWeight: '700', lineHeight: '140%' },
+      h2: { fontSize: rem(22), fontWeight: '700', lineHeight: '140%' }
     }
   }
 }) as Partial<MantineTheme>;
