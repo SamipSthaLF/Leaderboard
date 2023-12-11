@@ -50,6 +50,13 @@ const ChallengesForm = () => {
       <form onSubmit={form.onSubmit(handleSubmit)} onReset={form.reset}>
         <Flex direction="column" gap={'1rem'}>
           <Flex direction="row" justify="space-between" gap="1em">
+            <TextInput
+              radius={'6px'}
+              w={'100%'}
+              label="Challenge Title"
+              placeholder="Enter title"
+              {...form.getInputProps('challengeTitle')}
+            />
             <NumberInput
               radius={'6px'}
               hideControls
@@ -57,13 +64,6 @@ const ChallengesForm = () => {
               label="Challenge Score"
               placeholder="Enter challenge score"
               {...form.getInputProps('challengeScore')}
-            />
-            <TextInput
-              radius={'6px'}
-              w={'100%'}
-              label="Challenge Title"
-              placeholder="Enter title"
-              {...form.getInputProps('challengeTitle')}
             />
           </Flex>
           <Textarea
