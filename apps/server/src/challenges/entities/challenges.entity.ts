@@ -7,8 +7,7 @@ import {
   CreateDateColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-
-import { visibilityOptions } from '@/challenges/dto/challenges.dto';
+import { visibilityOptions } from '@/challenges/dto/create-challenges.dto';
 
 @Entity()
 export class Challenge {

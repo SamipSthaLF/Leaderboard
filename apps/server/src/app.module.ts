@@ -14,7 +14,7 @@ import { AppController } from '@/app.controller';
 import getDBConfig from '@/config/typeorm.config';
 
 import { JwtStrategy } from '@filter/jwt.strategy';
-import { ChallengesModule } from './challenges/challenges.module';
+import { ChallengesModule } from '@/challenges/challenges.module';
 
 @Module({
   imports: [

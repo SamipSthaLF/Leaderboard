@@ -14,9 +14,3 @@ export class CreateChallengeDto {
 
   @ApiProperty({ default: 1 }) public author_id: number;
 }
-
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
-export interface UpdateChallengeDto extends Partial<CreateChallengeDto> {}
-
-// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
-export class UpdateChallengeDto {}
