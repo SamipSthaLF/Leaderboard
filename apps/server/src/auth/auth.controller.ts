@@ -38,8 +38,8 @@ export class AuthController {
   @ApiBadRequestResponse({ description: 'Redirection failed' })
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthenticationGuard)
-  async authenticationRedirect(@Request() req: HttpRequest) {
-    return await this.authService.requestAuthentication(req);
+  authenticationRedirect(@Request() req: HttpRequest) {
+    return this.authService.requestAuthentication(req);
   }
 
   @Get('google/callback')
@@ -47,6 +47,6 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthenticationGuard)
   async callbacktest(@Request() req: HttpRequest) {
-    return await this.authService.createOrUpdateUser(req.user);
+    return await this.authService.createOrUpdateUser(req);
   }
 }

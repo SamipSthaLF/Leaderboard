@@ -1,15 +1,15 @@
+import { RoleEnum } from '@/common/constants/role.enum';
+
 import {
   Column,
   Entity,
-  JoinTable,
   BaseEntity,
-  ManyToMany,
+  CreateDateColumn,
   PrimaryGeneratedColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-
-import { Role } from '@/roles/entities/role.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -20,15 +20,17 @@ export class User extends BaseEntity {
   @Column()
   username: string;
 
-  @ApiPropertyOptional({ default: '2023-09-13' })
-  @Column()
+  @CreateDateColumn()
   createdOn: string;
 
-  @ApiPropertyOptional({ default: '2023-09-14' })
-  @Column()
-  lastLoginTime: string;
+  @Column({
+    type: 'enum',
+    enum: RoleEnum,
+    array: true,
+    default: [RoleEnum.USER],
+  })
+  roles: RoleEnum[];
 
-  @ManyToMany(() => Role, (role) => role.users, { cascade: true })
-  @JoinTable()
-  roles: Role[];
+  @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp', nullable: true })
+  deletedAt: Date;
 }

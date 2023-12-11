@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
 
-import { Challenge } from './entities/challenges.entity';
-import { CreateChallengeDto } from './dto/challenges.dto';
+import { Challenge } from '@/challenges/entities/challenges.entity';
+import { CreateChallengeDto } from '@/challenges/dto/create-challenges.dto';
 
 @Injectable()
 export class ChallengesService {
@@ -18,7 +18,7 @@ export class ChallengesService {
    * @param {CreateChallengeDto} payload - The payload containing challenge information.
    * @returns {Promise<ChallengeEntity>} - The created challenge entity.
    */
-  public async create(payload: CreateChallengeDto) {
+  async create(payload: CreateChallengeDto) {
     const challengeEntity = this.challengeRepository.create(payload);
     return await this.challengeRepository.save(challengeEntity);
   }
@@ -27,7 +27,7 @@ export class ChallengesService {
    * Find all challenges.
    * @returns {Promise<ChallengeEntity[]>} - An array of all challenge entities.
    */
-  public async findAll() {
+  async findAll() {
     return this.challengeRepository.find();
   }
 
@@ -36,7 +36,7 @@ export class ChallengesService {
    * @param {number} id - The ID of the challenge to find.
    * @returns {Promise<ChallengeEntity | undefined>} - The found challenge entity or undefined if not found.
    */
-  public async findByID(id: number) {
+  async findByID(id: number) {
     return this.challengeRepository.findOne({
       where: {
         id,
@@ -50,7 +50,7 @@ export class ChallengesService {
    * @param {Partial<CreateChallengeDto>} payload - The partial data to update in the challenge.
    * @returns {Promise<UpdateResult>} - The result of the update operation.
    */
-  public async update(id: number, payload: Partial<CreateChallengeDto>) {
+  async update(id: number, payload: Partial<CreateChallengeDto>) {
     return await this.challengeRepository.update({ id }, payload);
   }
 
@@ -59,7 +59,7 @@ export class ChallengesService {
    * @param {number} id - The ID of the challenge to delete.
    * @returns {Promise<DeleteResult>} - The result of the delete operation.
    */
-  public async delete(id: number) {
+  async delete(id: number) {
     return await this.challengeRepository.delete({ id });
   }
 }

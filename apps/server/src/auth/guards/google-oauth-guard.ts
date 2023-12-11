@@ -4,6 +4,8 @@ import { ConfigService } from '@nestjs/config';
 
 import { Injectable, ExecutionContext } from '@nestjs/common';
 
+const accessType = 'offline' as const; // define accesstype of string literal
+
 @Injectable()
 export class AuthenticationGuard extends AuthGuard('google') {
   /**
@@ -12,9 +14,10 @@ export class AuthenticationGuard extends AuthGuard('google') {
    */
   constructor(private configService: ConfigService) {
     super({
-      accessType: 'offline',
+      accessType: accessType,
     });
   }
+
   /**
    * Determine if the route should be activated for authentication.
    *
@@ -30,6 +33,7 @@ export class AuthenticationGuard extends AuthGuard('google') {
       // If x-api-key is present, bypass authentication
       return true;
     }
+
     // If x-api-key is not present, proceed with the default authentication logic
     const result = await super.canActivate(context);
     return result as boolean;

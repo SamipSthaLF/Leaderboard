@@ -12,6 +12,8 @@ import { ErrorMessage } from '@common/errors/error.message';
 import { RestException } from '@common/exceptions/rest.exception';
 import { ErrorDescription } from '@common/errors/constants/description.error';
 
+import { RoleEnum } from '@/common/constants/role.enum';
+
 /**
  * Service responsible for handling CRUD operations related to users.
  * @class
@@ -30,10 +32,14 @@ export class UserService {
   /**
    * Creates a new user based on the provided DTO.
    * @param {CreateUserDto} createUserDto - The DTO containing user creation information.
-   * @returns {string} - A message indicating the success of the operation.
+   * @returns {Promise<User>} - A message indicating the success of the operation.
    */
-  create(createUserDto: CreateUserDto): string {
-    return 'This action adds a new user';
+  create(createUserDto: CreateUserDto) {
+    const user = this.userRepository.create({
+      username: createUserDto.username,
+      roles: [RoleEnum.USER],
+    });
+    return this.userRepository.save(user);
   }
 
   /**
@@ -41,7 +47,7 @@ export class UserService {
    * @returns {Promise<User[]>} - An array of users with associated roles.
    */
   findAll(): Promise<User[]> {
-    return this.userRepository.find({ relations: ['roles'] });
+    return this.userRepository.find();
   }
 
   /**
@@ -49,22 +55,49 @@ export class UserService {
    * @param {number} id - The ID of the user to retrieve.
    * @returns {Promise<User>} - The user entity.
    */
-  findOne(id: number) {
-    return this.userRepository.findOne({ where: { id: id } });
+  async findOne(id: number) {
+    const user = await this.userRepository.findOne({ where: { id: id } });
+    if (!user) {
+      throw RestException.throwNoAssociatedUserException();
+    }
+    return user;
   }
 
   /**
    * Updates a user based on the provided ID and DTO.
+   *
+   * @async
    * @param {number} id - The ID of the user to update.
    * @param {UpdateUserDto} updateUserDto - The DTO containing user update information.
-   * @returns {string} - A message indicating the success of the operation.
+   * @param {Request} request - The request from express.
+   * @returns {Promise<user>} -Promise<User>
    */
-  update(id: number, updateUserDto: UpdateUserDto): string {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const existingUser = await this.userRepository.findOne({
+      where: { id: id },
+    });
+    if (!existingUser) {
+      throw RestException.throwNoAssociatedUserException();
+    }
+    const updatedRoles: RoleEnum[] = updateUserDto.roles
+      .map((roleString: string) => {
+        const roleEnumValue =
+          RoleEnum[roleString.toUpperCase() as keyof typeof RoleEnum];
+        return roleEnumValue;
+      })
+      .filter((roleEnumValue) => roleEnumValue !== undefined) as RoleEnum[]; //filter out undefined and null values
+
+    // Remove duplicates from updatedRoles
+    const uniqueUpdatedRoles = Array.from(new Set(updatedRoles));
+
+    existingUser.roles = uniqueUpdatedRoles;
+
+    return await this.userRepository.save(existingUser);
   }
 
   /**
    * Removes a user based on the provided ID.
+   * @async
    * @async
    * @param {number} id - The ID of the user to remove.
    * @returns {Promise<{ message: string }>} - An object containing a message indicating the success of the operation.
@@ -75,13 +108,7 @@ export class UserService {
       where: { id: id },
     });
     if (!existingUser) {
-      throw new RestException(
-        new ErrorMessage(
-          HttpStatus.NOT_ACCEPTABLE,
-          HttpStatus.NOT_ACCEPTABLE.toLocaleString(),
-          ErrorDescription.USER_ALREADY_INVITED,
-        ),
-      );
+      throw RestException.throwNoAssociatedUserException();
     }
     await this.userRepository.softDelete(id);
     return {

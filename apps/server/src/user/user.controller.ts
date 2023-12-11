@@ -6,8 +6,9 @@ import {
   Param,
   Delete,
   HttpCode,
-  HttpStatus,
   Controller,
+  HttpStatus,
+  ParseIntPipe,
 } from '@nestjs/common';
 
 import {
@@ -18,13 +19,13 @@ import {
 } from '@nestjs/swagger';
 
 import { UserService } from '@/user/user.service';
-import { CreateUserDto } from '@/user/dto/create-user.dto';
-import { UpdateUserDto } from '@/user/dto/update-user.dto';
 
 import { Roles } from '@/decorator/roles.decorator';
 import { User } from './entities/user.entity';
 
-@ApiTags('User')
+import { CreateUserDto } from '@/user/dto/create-user.dto';
+import { UpdateUserDto } from '@/user/dto/update-user.dto';
+
 @Controller('user')
 @Roles('Admin')
 @ApiBearerAuth()
@@ -43,12 +44,6 @@ export class UserController {
   }
 
   @Get()
-  @Roles('Reviewer', 'User', 'Admin')
-  @ApiCreatedResponse({
-    description: 'Fetched all users',
-    type: User,
-  })
-  @ApiBadRequestResponse({ description: 'Users cannot be fetched' })
   @HttpCode(HttpStatus.OK)
   async findAll() {
     return await this.userService.findAll();
@@ -56,35 +51,23 @@ export class UserController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  @ApiCreatedResponse({
-    description: 'Fetched user',
-    type: User,
-  })
-  @ApiBadRequestResponse({ description: 'User cannot be fetched' })
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.findOne(id);
   }
 
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
-  @ApiCreatedResponse({
-    description: 'Updated user',
-    type: User,
-  })
-  @ApiBadRequestResponse({ description: 'User cannot be updated' })
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiCreatedResponse({
-    description: 'Deleted user',
-    type: User,
-  })
-  @ApiBadRequestResponse({ description: 'User cannot be deleted' })
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  @HttpCode(HttpStatus.OK)
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    return await this.userService.remove(id);
   }
 
   @Post('invite')

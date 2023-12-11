@@ -9,12 +9,15 @@ import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 
 import { ROLES_KEY } from '@decorator/roles.decorator';
+import { SKIP_AUTH_KEY } from '@/decorator/skip-auth.decorator';
 
+import { RoleEnum } from '@/common/constants/role.enum';
 import { ErrorMessage } from '@common/errors/error.message';
 
 import { RestException } from '@common/exceptions/rest.exception';
 
 import { ErrorDescription } from '@common/errors/constants/description.error';
+import { User } from '@/user/entities/user.entity';
 
 /**
  * Custom JWT authentication guard that extends the `AuthGuard` from `@nestjs/passport`.
@@ -38,29 +41,45 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
    * @returns {Promise<boolean>} - A boolean indicating whether the route can be accessed.
    */
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const isAuthSkipped = this.reflector.getAllAndOverride<boolean>(
-      'skipAuth',
-      [context.getHandler(), context.getClass()],
-    );
-
-    if (isAuthSkipped) {
-      return true; // Skip authentication for routes marked with @SkipAuth
+    if (
+      this.reflector.getAllAndOverride<boolean>(SKIP_AUTH_KEY, [
+        context.getHandler(),
+        context.getClass(),
+      ])
+    ) {
+      return true;
     }
 
-    // Continue with the authentication
-    const canActivate = await super.canActivate(context);
-
-    if (!canActivate) {
-      return false; // Authentication failed
+    // Proceed with standard authentication check
+    if (!(await super.canActivate(context))) {
+      return false;
     }
 
-    // Check if the user has the required roles from the token
-    //check for controller roles
+    // Retrieve roles from controller and method context
+    const roles = this.getRoles(context);
+
+    // If no roles are specified, allow access
+    if (!roles.length) return true;
+
+    // Get user from request and verify role access
+    const userRoles = context.switchToHttp().getRequest().user.roles;
+    if (this.hasRequiredRoles(userRoles, roles)) {
+      return true;
+    }
+
+    throw new UnauthorizedException('User does not have the required roles');
+  }
+
+  /**
+   * Combines controller and method roles into a single array.
+   * @param {ExecutionContext} context - The execution context of the route.
+   * @returns {string[]} - The combined roles.
+   */
+  getRoles(context: ExecutionContext): string[] {
     const controllerRoles = this.reflector.getAllAndOverride<string[]>(
       ROLES_KEY,
       [context.getClass()],
     );
-
     //check for method roles
     const methodRoles = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [
       context.getHandler(),
@@ -74,54 +93,44 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     //   ]),
     // );
     */
-    let roles: string[] = [];
 
-    // Check if both controllerRoles and methodRoles are defined before combining
-    if (controllerRoles !== undefined && methodRoles !== undefined) {
-      roles = [...controllerRoles, ...methodRoles];
-    } else if (controllerRoles !== undefined) {
-      roles = controllerRoles;
-    } else if (methodRoles !== undefined) {
-      roles = methodRoles;
-    }
-    console.log(roles, 'asmin');
-    if (!roles || roles.length < 1) {
-      return true; // No roles specified, allow access
-    }
+    // Combine and deduplicate roles
+    return [...new Set([...(controllerRoles || []), ...(methodRoles || [])])];
+  }
 
-    const request = await context.switchToHttp().getRequest();
-    const user = request.user;
-
-    if (
-      !user ||
-      !user.roles ||
-      !roles.some((role) => user.roles.includes(role))
-    ) {
-      throw new UnauthorizedException('User does not have the required roles');
-    }
-
-    return true; // Authentication and role check successful
+  /**
+   * Checks if the user has at least one of the required roles.
+   * @param {RoleEnum[]} userRoles - The user object from the request.
+   * @param {string[]} roles - The required roles.
+   * @returns {boolean} - Whether the user has required roles.
+   */
+  hasRequiredRoles(userRoles: RoleEnum[], roles: string[]): boolean {
+    return userRoles?.some((userRole) => roles.includes(userRole));
   }
 
   /**
    * Handles the result of the authentication.
-   * @param {any} err - The error object, if any.
-   * @param {any} user - The user object, if authentication is successful.
-   * @param {any} info - Additional information about the authentication process.
-   * @returns {any} - The user object if authentication is successful.
+   * @param {Error} err - The error object.
+   * @param {User} user - The user object, if authentication is successful.
+   * @param {string} info - Additional information about the authentication process.
+   * @returns {User} - The user object if authentication is successful.
    * @throws {RestException} - Throws a `RestException` if authentication fails.
    */
-  handleRequest(err: any, user: any): any {
+  handleRequest<TUser = User>(
+    err: Error | null,
+    user: User | null,
+    info: string,
+  ): TUser {
     if (err || !user) {
       const unauthorizedException = new UnauthorizedException();
       const errorMessage = new ErrorMessage(
         unauthorizedException.getStatus(),
-        unauthorizedException.message,
+        unauthorizedException.message.concat(':').concat(info), //will remove concat block after discussion regarding if we need info at all
         ErrorDescription.UNAUTHORIZED_USER,
       );
       throw new RestException(errorMessage);
     }
 
-    return user;
+    return user as unknown as TUser; //unsure how  not to use the return type as any here.
   }
 }

@@ -1,6 +1,7 @@
+import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-export function setupSwagger(app: any) {
+export function setupSwagger(app: INestApplication) {
   const options = new DocumentBuilder()
     .setTitle('Engineering Leader Board')
     .setDescription(apiDescription)
