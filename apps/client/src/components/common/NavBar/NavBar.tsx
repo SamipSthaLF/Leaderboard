@@ -7,14 +7,14 @@ import { IconFileCheck, IconLayoutGrid } from '@tabler/icons-react';
 
 import { Avatar, Box, Divider, Flex, Group, NavLink, Stack, Text } from '@mantine/core';
 
-import { Logo } from '@/components/Logo';
+import { Logo } from '@/components/common/Logo';
 
 const data = [
   { link: '/challenges', label: 'Challenges', icon: IconLayoutGrid },
   { link: '/reviews', label: 'Reviews', icon: IconFileCheck }
 ];
 
-export function Navbar() {
+export function NavBar() {
   const user = { name: 'Jessy Smith', email: 'jessysmith@leaderboard.com' };
   const [activeNavIndex, setActiveNavIndex] = useState(0);
 
