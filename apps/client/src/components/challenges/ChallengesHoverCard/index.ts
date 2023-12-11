@@ -1,0 +1,1 @@
+export { ChallengesHoverCard } from './ChallengesHoverCard';

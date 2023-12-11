@@ -1,6 +1,7 @@
-import { Request as HttpRequest } from 'express';
 
 import { Get, Request, Controller, UseGuards } from '@nestjs/common';
+
+import { Request as HttpRequest } from 'express';
 
 import { AuthService } from '@/auth/auth.service';
 

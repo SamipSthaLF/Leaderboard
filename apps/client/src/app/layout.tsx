@@ -6,7 +6,7 @@ import { theme } from './theme';
 import { SFProDisplay } from './fonts';
 import { Providers } from './providers';
 
-import { Navbar } from '@/components/NavBar';
+import { NavBar } from '@/components/common/NavBar';
 
 import '@/styles/globals.scss';
 import '@mantine/core/styles.css';
@@ -36,10 +36,9 @@ export default function RootLayout({
               breakpoint: 'sm',
               collapsed: { mobile: false }
             }}
-            padding="md"
           >
             <AppShellNavbar>
-              <Navbar />
+              <NavBar />
             </AppShellNavbar>
             <AppShellMain>
               <Providers>{children}</Providers>
