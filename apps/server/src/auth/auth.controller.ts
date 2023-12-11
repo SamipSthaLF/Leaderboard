@@ -1,17 +1,15 @@
-import { ApiBearerAuth } from '@nestjs/swagger';
-import { Get, Request, Controller, UseGuards } from '@nestjs/common';
-
 import { Request as HttpRequest } from 'express';
 
-import { SkipAuth } from '@decorator/skip-auth.decorator';
+import { Get, Request, Controller, UseGuards } from '@nestjs/common';
 
 import { AuthService } from '@/auth/auth.service';
+
+import { SkipAuth } from '@decorator/skip-auth.decorator';
 
 import { AuthenticationGuard } from '@/auth/guards/google-oauth-guard';
 
 @Controller('auth')
 @SkipAuth()
-@ApiBearerAuth()
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

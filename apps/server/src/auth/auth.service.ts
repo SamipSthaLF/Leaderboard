@@ -11,8 +11,9 @@ import { UserDto } from '@/user/dto/user.dto';
 
 import { User } from '@/user/entities/user.entity';
 
-import { generateAccessToken } from '@/auth/util/jwt.util';
 import { UserService } from '@/user/user.service';
+
+import { generateAccessToken } from '@/auth/util/jwt.util';
 
 @Injectable()
 export class AuthService {
