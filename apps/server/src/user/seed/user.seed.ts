@@ -34,10 +34,8 @@ export class UserSeed {
     if (existingUsers.length === 0) {
       // Users do not exist, seed some initial data
       const user = await this.userService.create(
-        new CreateUserDto('asminshrestha@lftechnology.com'),
+        new CreateUserDto('alinadangol@lftechnology.com'),
       );
-      user.roles = [RoleEnum.ADMIN, RoleEnum.USER];
-      this.userService.saveUser(user);
       user.roles = [RoleEnum.ADMIN, RoleEnum.USER];
       this.userService.saveUser(user);
       // Add more users as needed
