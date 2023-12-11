@@ -12,6 +12,7 @@ export class ChallengesSeed {
    */
   async seed() {
     const existingChallenges = await this.challengesService.findAll();
+
     if (existingChallenges.length === 0) {
       this.challengesService.create({
         points: 12,
