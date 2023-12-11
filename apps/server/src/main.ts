@@ -7,7 +7,7 @@ import { setupSwagger } from '../swagger.config';
 import { UserSeed } from '@/user/seed/user.seed';
 
 import { JwtAuthGuard } from '@filter/jwt-auth.guard';
-import { ChallengesSeed } from './challenges/seed/challenges.seed';
+import { ChallengesSeed } from '@/challenges/seed/challenges.seed';
 import { INestApplication } from '@nestjs/common';
 
 async function bootstrap() {
