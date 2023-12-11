@@ -59,7 +59,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (!roles.length) return true;
 
     // Get user from request and verify role access
-    const userRoles = context.switchToHttp().getRequest().use.roles;
+    const userRoles = context.switchToHttp().getRequest().user.roles;
     if (this.hasRequiredRoles(userRoles, roles)) {
       return true;
     }
@@ -77,12 +77,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       ROLES_KEY,
       [context.getClass()],
     );
-    //check for controller roles
-    const contmethodRollerRoles = this.reflector.getAllAndOverride<string[]>(
-      ROLES_KEY,
-      [context.getClass()],
-    );
-
     //check for method roles
     const methodRoles = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [
       context.getHandler(),
@@ -96,7 +90,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     //   ]),
     // );
     */
-    let roles: string[] = [];
 
     // Combine and deduplicate roles
     return [...new Set([...(controllerRoles || []), ...(methodRoles || [])])];
