@@ -6,7 +6,7 @@ import { SkipAuth } from '@decorator/skip-auth.decorator';
 
 import { AuthService } from '@/auth/auth.service';
 
-import { AuthenticationGuard } from '@/auth/guards/google-oauth-guard';
+import { AuthenticationGuard } from '@/guards/google-oauth-guard';
 
 @Controller('auth')
 @SkipAuth()

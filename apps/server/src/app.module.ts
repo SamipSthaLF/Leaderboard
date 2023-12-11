@@ -1,27 +1,29 @@
-import { DataSource } from 'typeorm';
-
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-
-import { AppService } from '@/app.service';
 
 import { AuthModule } from '@/auth/auth.module';
 import { UserModule } from '@/user/user.module';
+import { ConfigModule } from '@/config/config.module';
+import { ChallengesModule } from '@/challenges/challenges.module';
 
 import { AppController } from '@/app.controller';
 
-import getDBConfig from '@/config/typeorm.config';
+import { AppService } from '@/app.service';
+import { ConfigService } from '@/config/config.service';
 
-import { JwtStrategy } from '@filter/jwt.strategy';
-import { ChallengesModule } from '@/challenges/challenges.module';
+import { getDBFactory } from '@/utils/db.util';
+
+import { JwtStrategy } from '@/filter/jwt.strategy';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule,
     TypeOrmModule.forRootAsync({
-      useFactory: (configService: ConfigService) => getDBConfig(configService),
+      imports: [ConfigModule],
       inject: [ConfigService],
+      useFactory(configService: ConfigService) {
+        return getDBFactory(configService);
+      },
     }),
     AuthModule,
     UserModule,
@@ -30,6 +32,4 @@ import { ChallengesModule } from '@/challenges/challenges.module';
   controllers: [AppController],
   providers: [AppService, JwtStrategy, JwtStrategy],
 })
-export class AppModule {
-  constructor(private dataSource: DataSource) {}
-}
+export class AppModule {}
