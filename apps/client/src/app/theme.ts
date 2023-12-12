@@ -15,18 +15,6 @@ export const theme = createTheme({
       '#2747c2',
       '#203eae',
       '#143699'
-    ],
-    'cerulean-dream': [
-      '#102B7B',
-      '#102B8B',
-      '#464EA5',
-      '#465EA5',
-      '#7274D1',
-      '#7474D1',
-      '#9E9DFE',
-      '#9EADEE',
-      '#CBC8FF',
-      '#CACEFF'
     ]
   },
   defaultRadius: 'sm',

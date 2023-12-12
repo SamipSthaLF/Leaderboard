@@ -8,7 +8,10 @@ import { useForm, zodResolver } from '@mantine/form';
 
 import { Button, Flex, NumberInput, Paper, Textarea, TextInput } from '@mantine/core';
 
+import { ChallengeFormProp } from '@/types/formTypes';
 import { ChallengeFormValues } from '@/types/challenges';
+
+import { FormActionType } from '@/components/common/constants/formActionType.enum';
 
 const schema = z.object({
   challengeScore: z.number().min(1, {
@@ -22,19 +25,6 @@ const schema = z.object({
   })
 });
 
-type AddForm = {
-  mode: 'add';
-};
-
-type EditForm = {
-  mode: 'edit';
-  initialValue: ChallengeFormValues;
-};
-
-type ChallengeFormProp = (AddForm | EditForm) & {
-  handleSubmit: (values: ChallengeFormValues) => void;
-};
-
 const defaultInitialValues: ChallengeFormValues = {
   challengeScore: NaN,
   challengeTitle: '',
@@ -42,10 +32,12 @@ const defaultInitialValues: ChallengeFormValues = {
 };
 
 export const ChallengesForm = (props: ChallengeFormProp) => {
+  const router = useRouter();
+
   const { mode, handleSubmit } = props;
 
   const form = useForm<ChallengeFormValues>({
-    initialValues: mode === 'edit' ? props.initialValue : defaultInitialValues,
+    initialValues: mode === FormActionType.EDIT ? props.initialValue : defaultInitialValues,
     validate: zodResolver(schema),
     validateInputOnBlur: true,
     name: 'challenge'
@@ -54,11 +46,11 @@ export const ChallengesForm = (props: ChallengeFormProp) => {
   const onSubmit = async (values: ChallengeFormValues) => {
     form.validate();
 
-    // other checks if any
     handleSubmit(values);
+
     router.push('/challenges');
   };
-  const router = useRouter();
+
   return (
     <Paper withBorder radius="sm" shadow="md" p="lg">
       <form onSubmit={form.onSubmit(onSubmit)} onReset={form.reset}>
@@ -97,7 +89,7 @@ export const ChallengesForm = (props: ChallengeFormProp) => {
               Cancel
             </Button>
             <Button type="submit" radius="sm" variant="filled">
-              {mode === 'add' ? 'Add' : 'Save'} Challenge
+              {mode === FormActionType.ADD ? 'Add' : 'Save'} Challenge
             </Button>
           </Flex>
         </Flex>
