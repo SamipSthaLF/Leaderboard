@@ -16,7 +16,7 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ApiProperty({ default: 'lftech@gmail.com' })
+  @ApiProperty({ default: 'user@mail.com' })
   @Column()
   username: string;
 

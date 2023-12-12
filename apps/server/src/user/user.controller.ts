@@ -17,11 +17,10 @@ import {
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
 
-import { UserService } from '@/user/user.service';
-
 import { Roles } from '@/decorator/roles.decorator';
-import { User } from '@/user/entities/user.entity';
 
+import { UserService } from '@/user/user.service';
+import { User } from '@/user/entities/user.entity';
 import { CreateUserDto } from '@/user/dto/create-user.dto';
 import { UpdateUserDto } from '@/user/dto/update-user.dto';
 
