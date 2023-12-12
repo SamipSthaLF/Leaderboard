@@ -1,3 +1,5 @@
+'use client';
+
 import NextImage from 'next/image';
 import {
   Box,
@@ -21,9 +23,11 @@ import {
 } from '@mantine/core';
 import { IconDotsVertical, IconPencil, IconTrash } from '@tabler/icons-react';
 
-import type { CardLayout, Challenge } from '@/types/challenges';
+import { useRouter } from 'next/navigation';
 
 import { getStylesByCardLayout } from '@/utils/challenges';
+
+import type { CardLayout, Challenge } from '@/types/challenges';
 
 import { ChallengesHoverCard } from '@/components/challenges/ChallengesHoverCard';
 
@@ -36,6 +40,7 @@ export function ChallengeCard({ cardLayout, challenge }: Readonly<Props>) {
   const { containerFlexDirection, coverImageHeight, titleFontSize, imageWrapperStyles, contentWrapperStyles } =
     getStylesByCardLayout(cardLayout);
 
+  const router = useRouter();
   return (
     <Paper component="article" p="xl" radius="md" shadow="sm" maw="850px" mx="auto" withBorder>
       <Flex direction={containerFlexDirection} gap="lg">
@@ -64,7 +69,7 @@ export function ChallengeCard({ cardLayout, challenge }: Readonly<Props>) {
                 </MenuTarget>
 
                 <MenuDropdown w="150" p="0" fz="sm">
-                  <MenuItem p="0">
+                  <MenuItem onClick={() => router.push(`/challenges/edit/${challenge.id}`)} p="0">
                     <Flex component="span" gap="sm" px="md" py="sm" align="center">
                       <ActionIcon color="gray.7" variant="transparent">
                         <IconPencil size={20} />

@@ -1,5 +1,9 @@
+'use client';
+
 import { IconPlus } from '@tabler/icons-react';
 import { Box, Button, Divider, Flex, Grid, GridCol, Title } from '@mantine/core';
+
+import { useRouter } from 'next/navigation';
 
 import type { SearchParams } from '@/types/common';
 import type { CardLayout } from '@/types/challenges';
@@ -10,6 +14,7 @@ import { LayoutToggleSwitch } from '@/components/challenges/LayoutToggleSwitch';
 
 // TO BE REMOVED
 const CHALLENGE = {
+  id: 1,
   title: 'Take an interview',
   description:
     'Public projects are subject to greater accountability, especially if you shared your repository. Public projects are subject to greater accountability, especially if you shared your repository',
@@ -24,13 +29,17 @@ export default function Challenges({ searchParams }: Readonly<{ searchParams: Se
   const layout = (searchParams.layout || 'list') as CardLayout;
   const gridSpan = layout === 'grid' ? 4 : 12;
 
+  const router = useRouter();
+
   return (
     <Box component="section" p="xl">
       <Flex mb="28" justify="space-between">
         <Title>Challenges</Title>
         <Flex gap="xl">
           <LayoutToggleSwitch />
-          <Button leftSection={<IconPlus size={14} />}>Challenge</Button>
+          <Button onClick={() => router.push('/challenges/add')} leftSection={<IconPlus size={14} />}>
+            Challenge
+          </Button>
         </Flex>
       </Flex>
       <Divider />
