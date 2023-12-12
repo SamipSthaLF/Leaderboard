@@ -1,5 +1,7 @@
 import { AuthGuard } from '@nestjs/passport';
+
 import { ConfigService } from '@nestjs/config';
+
 import { Injectable, ExecutionContext } from '@nestjs/common';
 
 const accessType = 'offline' as const; // define accesstype of string literal

@@ -4,7 +4,7 @@ import { IsString } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
-  @ApiProperty()
+  @ApiProperty({ default: 'user@mail.com' })
   public username: string;
 
   constructor(username: string) {

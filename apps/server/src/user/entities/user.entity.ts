@@ -9,17 +9,21 @@ import {
   DeleteDateColumn,
 } from 'typeorm';
 
+import { ApiProperty } from '@nestjs/swagger';
+
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty({ default: 'user@mail.com' })
   @Column()
   username: string;
 
   @CreateDateColumn()
   createdOn: string;
 
+  @ApiProperty({ default: ['User'] })
   @Column({
     type: 'enum',
     enum: RoleEnum,
