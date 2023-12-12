@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 
 import { Strategy, VerifyCallback } from 'passport-google-oauth2';
 
-import getGoogleStrategyConfig from '@config/googlestrategy.config';
-import { GoogleProfile } from '@/auth/interface/google-profile.interface';
+import { ConfigService } from '@/config/config.service';
+
+import { GoogleProfile } from '@/interface/google-profile.interface';
+import { getGoogleStrategyConfig } from '@/utils/google-strategy.util';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
@@ -14,8 +15,10 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
    *
    * @param {ConfigService} configService - NestJS ConfigService for accessing configuration values.
    */
-  constructor(configService: ConfigService) {
-    super(getGoogleStrategyConfig(configService));
+  constructor(private readonly configService: ConfigService) {
+    const googleConfig = getGoogleStrategyConfig(configService);
+
+    super(googleConfig);
   }
 
   /**
