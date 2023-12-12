@@ -1,15 +1,15 @@
-import { RoleEnum } from '@/common/constants/role.enum';
-
 import {
   Column,
   Entity,
   BaseEntity,
   CreateDateColumn,
-  PrimaryGeneratedColumn,
   DeleteDateColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity()
+import { RoleEnum } from '@/common/constants/role.enum';
+
+@Entity('users')
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;

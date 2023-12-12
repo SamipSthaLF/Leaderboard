@@ -9,10 +9,11 @@ import { ErrorDescription } from '@common/errors/constants/description.error';
 
 import { UserDto } from '@/user/dto/user.dto';
 
+import { UserService } from '@/user/user.service';
+
 import { User } from '@/user/entities/user.entity';
 
-import { generateAccessToken } from '@/auth/util/jwt.util';
-import { UserService } from '@/user/user.service';
+import { generateAccessToken } from '@/utils/jwt.util';
 
 @Injectable()
 export class AuthService {

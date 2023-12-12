@@ -1,6 +1,8 @@
-import { Box } from '@mantine/core';
+import { Box, BoxComponentProps } from '@mantine/core';
 
-type ContainerProps = React.ComponentProps<typeof Box>;
+interface ContainerProps extends BoxComponentProps {
+  children?: React.ReactNode;
+}
 
 export function Container(props: Readonly<ContainerProps>) {
   return <Box maw="1056px" mx="auto" {...props} />;
