@@ -1,10 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 
 import { Strategy, ExtractJwt } from 'passport-jwt';
 
-import getJwtConfiguration from '@config/jwt.config';
+import { ConfigService } from '@/config/config.service';
+
+import { getJwtFactory } from '@/utils/jwt.util';
+
+interface JwtPayload {
+  sub: number;
+  username: string;
+  roles: string[];
+  iat: number;
+  exp: number;
+}
 
 /**
  * Custom JWT strategy for passport authentication.
@@ -20,7 +29,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: getJwtConfiguration(configService).secret,
+      secretOrKey: getJwtFactory(configService).secret,
     });
   }
 
@@ -36,45 +45,4 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       roles: payload.roles,
     };
   }
-}
-
-/**
- * Interface representing the payload of a JSON Web Token (JWT).
- *
- * @interface JwtPayload
- */
-interface JwtPayload {
-  /**
-   * User ID associated with the JWT.
-   *
-   * @type {number}
-   */
-  sub: number;
-
-  /**
-   * Username associated with the JWT.
-   *
-   * @type {string}
-   */
-  username: string;
-
-  /**
-   * Array of roles assigned to the user in the JWT.
-   *
-   * @type {string[]}
-   */
-  roles: string[];
-
-  /**
-   * Issued At timestamp indicating when the JWT was created.
-   *
-   * @type {number}
-   */
-  iat: number;
-
-  /**
-   * Expiration timestamp indicating when the JWT expires.
-   * @type {number}
-   */
-  exp: number;
 }
