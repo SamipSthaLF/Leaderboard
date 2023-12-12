@@ -68,7 +68,8 @@ export function ChallengeCard({ cardLayout, challenge }: Readonly<Props>) {
                 </MenuTarget>
 
                 <MenuDropdown w="150" p="0" fz="sm">
-                  <MenuItem onClick={() => router.push('/challenge/edit')} p="0">
+                  {/* TODO change title to id */}
+                  <MenuItem onClick={() => router.push(`/challenges/edit/${challenge.title}`)} p="0">
                     <Flex component="span" gap="sm" px="md" py="sm" align="center">
                       <ActionIcon color="gray.7" variant="transparent">
                         <IconPencil size={20} />

@@ -45,13 +45,12 @@ export const ChallengesForm = (props: ChallengeFormProp) => {
     validateInputOnBlur: true,
     name: 'challenge'
   });
-  
+
   const onSubmit = async (values: ChallengeFormValues) => {
     form.validate();
 
     // other checks if any
     handleSubmit(values);
-    form.reset();
   };
 
   return (
@@ -86,7 +85,7 @@ export const ChallengesForm = (props: ChallengeFormProp) => {
               Cancel
             </Button>
             <Button type="submit" radius={'6px'} variant="filled">
-              Add Challenge
+              {mode === 'add' ? 'Add' : 'Edit'} Challenge
             </Button>
           </Flex>
         </Flex>

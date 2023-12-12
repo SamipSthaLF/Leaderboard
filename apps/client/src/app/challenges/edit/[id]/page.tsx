@@ -8,7 +8,9 @@ const items = [
   { title: 'Challenges', href: '/challenges' },
   { title: 'Edit Challenge', href: '#' }
 ];
-const EditChallenge = () => {
+const EditChallenge = (props: any) => {
+  console.log(props);
+ 
   const handleEditSubmit = async (values: ChallengeFormValues) => {
     console.log('values', values);
     // TODO PUT
@@ -36,4 +38,9 @@ const EditChallenge = () => {
     </>
   );
 };
+
+
+
+
+
 export default EditChallenge;
