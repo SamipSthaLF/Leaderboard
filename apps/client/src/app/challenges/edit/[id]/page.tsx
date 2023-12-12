@@ -1,5 +1,4 @@
 'use client';
-
 import { Anchor, Breadcrumbs, Divider, Title } from '@mantine/core';
 
 import { ChallengeFormValues } from '@/types/challenges';
