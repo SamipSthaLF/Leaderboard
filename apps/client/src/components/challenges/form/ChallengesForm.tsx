@@ -1,8 +1,13 @@
 'use client';
 
 import { z } from 'zod';
+
+import { useRouter } from 'next/navigation';
+
 import { useForm, zodResolver } from '@mantine/form';
+
 import { Button, Flex, NumberInput, Paper, Textarea, TextInput } from '@mantine/core';
+
 import { ChallengeFormValues } from '@/types/challenges';
 
 const schema = z.object({
@@ -51,41 +56,48 @@ export const ChallengesForm = (props: ChallengeFormProp) => {
 
     // other checks if any
     handleSubmit(values);
+    router.push('/challenges');
   };
-
+  const router = useRouter();
   return (
-    <Paper withBorder radius={'8px'} shadow="md" p="1.5rem">
+    <Paper withBorder radius="sm" shadow="md" p="lg">
       <form onSubmit={form.onSubmit(onSubmit)} onReset={form.reset}>
-        <Flex direction="column" gap={'1rem'}>
-          <Flex direction="row" justify="space-between" gap="1em">
+        <Flex direction="column" gap="lg">
+          <Flex direction="row" justify="space-between" gap="lg">
             <TextInput
-              radius={'6px'}
-              w={'100%'}
+              radius="sm"
+              w={'75%'}
               label="Challenge Title"
               placeholder="Enter title"
               {...form.getInputProps('challengeTitle')}
             />
             <NumberInput
-              radius={'6px'}
+              radius="sm"
               hideControls
-              w={'100%'}
+              w={'25%'}
               label="Challenge Score"
               placeholder="Enter challenge score"
               {...form.getInputProps('challengeScore')}
             />
           </Flex>
           <Textarea
-            radius={'6px'}
+            radius="sm"
             label="Description"
             placeholder="Type your description..."
             {...form.getInputProps('description')}
           />
-          <Flex direction="row" gap={'1.5rem'} justify="flex-end" align="center">
-            <Button type="reset" radius={'6px'} variant="outline" c="cascade-blue.9">
+          <Flex direction="row" gap="lg" justify="flex-end" align="center">
+            <Button
+              type="reset"
+              onClick={() => router.push('/challenges')}
+              radius="sm"
+              variant="outline"
+              c="cascade-blue.9"
+            >
               Cancel
             </Button>
-            <Button type="submit" radius={'6px'} variant="filled">
-              {mode === 'add' ? 'Add' : 'Edit'} Challenge
+            <Button type="submit" radius="sm" variant="filled">
+              {mode === 'add' ? 'Add' : 'Save'} Challenge
             </Button>
           </Flex>
         </Flex>

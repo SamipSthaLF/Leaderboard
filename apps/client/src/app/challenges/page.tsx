@@ -1,4 +1,5 @@
 'use client';
+
 import { IconPlus } from '@tabler/icons-react';
 import { Box, Button, Divider, Flex, Grid, GridCol, Title } from '@mantine/core';
 
@@ -13,6 +14,7 @@ import { LayoutToggleSwitch } from '@/components/challenges/LayoutToggleSwitch';
 
 // TO BE REMOVED
 const CHALLENGE = {
+  id: 1,
   title: 'Take an interview',
   description:
     'Public projects are subject to greater accountability, especially if you shared your repository. Public projects are subject to greater accountability, especially if you shared your repository',

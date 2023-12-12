@@ -24,9 +24,9 @@ import { IconDotsVertical, IconPencil, IconTrash } from '@tabler/icons-react';
 
 import { useRouter } from 'next/navigation';
 
-import type { CardLayout, Challenge } from '@/types/challenges';
-
 import { getStylesByCardLayout } from '@/utils/challenges';
+
+import type { CardLayout, Challenge } from '@/types/challenges';
 
 import { ChallengesHoverCard } from '@/components/challenges/ChallengesHoverCard';
 
@@ -68,8 +68,7 @@ export function ChallengeCard({ cardLayout, challenge }: Readonly<Props>) {
                 </MenuTarget>
 
                 <MenuDropdown w="150" p="0" fz="sm">
-                  {/* TODO change title to id */}
-                  <MenuItem onClick={() => router.push(`/challenges/edit/${challenge.title}`)} p="0">
+                  <MenuItem onClick={() => router.push(`/challenges/edit/${challenge.id}`)} p="0">
                     <Flex component="span" gap="sm" px="md" py="sm" align="center">
                       <ActionIcon color="gray.7" variant="transparent">
                         <IconPencil size={20} />
