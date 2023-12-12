@@ -1,46 +1,41 @@
 'use client';
 
-import { ChallengesForm } from '@/components/challenges/form';
+import { Anchor, Breadcrumbs, Divider, Title } from '@mantine/core';
+
 import { ChallengeFormValues } from '@/types/challenges';
-import { Anchor, Box, Breadcrumbs, Divider, Title } from '@mantine/core';
+
+import { Container } from '@/components/common/Container';
+
+import { ChallengesForm } from '@/components/challenges/form';
+import { FormActionType } from '@/components/common/constants/formActionType.enum';
 
 const items = [
   { title: 'Challenges', href: '/challenges' },
   { title: 'Edit Challenge', href: '#' }
 ];
-const EditChallenge = (props: any) => {
-  console.log(props);
- 
+const EditChallenge = () => {
   const handleEditSubmit = async (values: ChallengeFormValues) => {
-    console.log('values', values);
-    // TODO PUT
-    // If success navigate to /challenge
+    return;
   };
 
   return (
-    <>
-      <Box component="section" p="2em" w={'100%'} mx="auto">
-        <Breadcrumbs>
-          {items.map((item, index) => (
-            <Anchor href={item.href} key={index}>
-              {item.title}
-            </Anchor>
-          ))}
-        </Breadcrumbs>
-        <Title style={{ margin: '1rem 0' }}>Edit Challenges</Title>
-        <Divider my="lg" />
-        <ChallengesForm
-          mode="edit"
-          initialValue={{ challengeScore: 1, challengeTitle: 'Take interview', description: 'Please take interview' }}
-          handleSubmit={handleEditSubmit}
-        />
-      </Box>
-    </>
+    <Container p="2xl" w={'100%'}>
+      <Breadcrumbs>
+        {items.map((item, index) => (
+          <Anchor href={item.href} key={index}>
+            {item.title}
+          </Anchor>
+        ))}
+      </Breadcrumbs>
+      <Title my="md">Edit Challenges</Title>
+      <Divider my="lg" />
+      <ChallengesForm
+        mode={FormActionType.EDIT}
+        initialValue={{ challengeScore: 1, challengeTitle: 'Take interview', description: 'Please take interview' }}
+        handleSubmit={handleEditSubmit}
+      />
+    </Container>
   );
 };
-
-
-
-
 
 export default EditChallenge;

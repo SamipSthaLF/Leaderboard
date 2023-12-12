@@ -7,7 +7,7 @@ export type ChallengeFormValues = {
 export type CardLayout = 'grid' | 'list';
 
 export interface Challenge {
-  id?: number;
+  id: number;
   title: string;
   score: number;
   description: string;
