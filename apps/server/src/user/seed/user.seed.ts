@@ -31,16 +31,17 @@ export class UserSeed {
     // Check if users already exist in the database
     const existingUsers = await this.userService.findAll();
 
-    if (existingUsers.length === 0) {
-      // Users do not exist, seed some initial data
-      const user = await this.userService.create(
-        new CreateUserDto('asminshrestha@lftechnology.com'),
-      );
-      user.roles = [RoleEnum.ADMIN, RoleEnum.USER];
-      this.userService.saveUser(user);
-      user.roles = [RoleEnum.ADMIN, RoleEnum.USER];
-      this.userService.saveUser(user);
-      // Add more users as needed
+    if (existingUsers.length !== 0) {
+      return;
     }
+
+    // Users do not exist, seed some initial data
+    const user = await this.userService.create(
+      new CreateUserDto('asminshrestha@lftechnology.com'),
+    );
+
+    user.roles = [RoleEnum.ADMIN, RoleEnum.USER];
+    this.userService.saveUser(user);
+    // Add more users as needed
   }
 }
